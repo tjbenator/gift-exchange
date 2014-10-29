@@ -1,9 +1,11 @@
-@extends('templates.default')
-
-@section('pagetitle', $exchange->name)
-@section('content')
-<h3>{{$exchange->name}}</h3>
-<a href='{{URL::action('exchange.join', [$exchange->slug] )}}' class='btn btn-success' style="margin-bottom: 10px;">Join</a>
+@if(!Auth::check() || !Auth::User()->exchanges()->whereName($exchange->name)->count() > 0)
+	<a href='{{URL::action('exchange.join', [$exchange->slug] )}}' class='btn btn-success' style="margin-bottom: 10px;">Join</a>
+@else
+	<a href='{{URL::action('exchange.leave', [$exchange->slug] )}}' class='btn btn-warning' style="margin-bottom: 10px;">Leave</a>
+@endif
+@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
+<a href='{{URL::action('exchange.delete', [$exchange->slug] )}}' class='btn btn-danger' style="margin-bottom: 10px;">Delete</a>
+@endif
 <div class='well'>
 {{$exchange->description}}
 </div>
@@ -18,13 +20,12 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach($exchange->participants() as $participant)
+		@foreach($exchange->participants()->get() as $participant)
 	    <tr>
     		<td>
-    			<h3><a href='{{ URL::route('user', [$participant->username]) }}'>{{$participant->name}}</a></h3>
+    			<h3><a href='{{ URL::route('user', [$participant->username]) }}'>{{$participant->username}}</a></h3>
     		</td>
     	</tr>
     	@endforeach
     </tbody>
 </table>
-@stop

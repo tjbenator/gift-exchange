@@ -1,8 +1,3 @@
-@extends('templates.default')
-
-@section('pagetitle', 'Login')
-
-@section('content')
 <div class="well">
 {{ Form::open(array('url' => 'login')) }}
 	<div class="form-group">
@@ -20,5 +15,3 @@
 <a href="{{ URL::to('password/remind') }}">Forgot your password?</a>
 </p>
 </div>
-
-@stop

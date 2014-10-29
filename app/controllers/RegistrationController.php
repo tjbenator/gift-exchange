@@ -1,5 +1,5 @@
 <?php
-class RegistrationController extends BaseController
+class RegistrationController extends PageController
 {
 	public function postRegister() 
 	{
@@ -30,6 +30,7 @@ class RegistrationController extends BaseController
 
 	public function getRegister()
 	{
-		return View::make('register');
+		$this->layout->title = 'Register';
+		$this->layout->content = View::make('register');
 	}
 }

@@ -88,3 +88,12 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+Route::filter('exchange.owner', function ($route, $request) {
+	$exchange = $route->getParameter('exchange');
+	if (Auth::check()) {
+		if ($exchange->user->id == Auth::user()->id) return;
+	}
+	
+	return Redirect::route('exchanges')->withErrors(['e' => 'You are not the owner of the "' . $exchange->name . '" exchange!']);
+});

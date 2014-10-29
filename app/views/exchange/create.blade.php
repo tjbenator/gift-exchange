@@ -1,7 +1,3 @@
-@extends('templates.default')
-
-@section('pagetitle', 'Create an Exchange')
-@section('content')
 <div class='well'>
 {{ Form::open(array('route' => 'exchange.create')) }}
 	<div class="form-group">
@@ -28,4 +24,3 @@
 {{ Form::submit('Create', array('class' => "btn btn-success")) }}
 {{ Form::close() }}
 </div>
-@stop

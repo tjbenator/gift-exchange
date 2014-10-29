@@ -12,13 +12,17 @@ class Exchange extends Eloquent implements SluggableInterface
     );
 
 	protected $table = 'exchanges';
-
-
-	public function creator() {
-		return $this->belongsTo('User');
+	
+	public function getDrawAtAttribute($attr) {        
+    	return date('F jS', $attr);
+    }
+	public function creator()
+	{
+		return $this->belongsTo('User', 'creator', 'id');
 	}
 
-	public function participants() {
+	public function participants()
+	{
 		return $this->belongsToMany('User');
 	}
 

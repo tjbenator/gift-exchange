@@ -1,14 +1,16 @@
 <?php
-class ExchangeController extends BaseController
+class ExchangeController extends PageController
 {
 	public function getIndex()
 	{
-		return View::make('exchange.main')->with('exchanges', Exchange::all());
+		$this->layout->title = 'Exchanges';
+		$this->layout->nest('content', 'exchange.main', ['exchanges' => Exchange::all()]);
 	}
 
 	public function getCreate()
 	{
-		return View::make('exchange.create');
+		$this->layout->title = 'Create an Exchange';
+		$this->layout->content = View::make('exchange.create');
 	}
 
 	public function postCreate() 
@@ -37,12 +39,13 @@ class ExchangeController extends BaseController
 	}
 
 	public function getJoin(Exchange $exchange) {
-		return View::make('exchange.join')->with('exchange', $exchange);
+		$this->layout->title = 'Join "' . $exchange->name . '"';
+		$this->layout->nest('content', 'exchange.join', ['exchange' => $exchange]);
 	}
 
 	public function postJoin(Exchange $exchange) {
 		$rules = array (
-			'wishlist' => 'required|min:3|max:2048',
+			'' => '',
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -50,20 +53,65 @@ class ExchangeController extends BaseController
 		if ($validator->fails()) {
 			return Redirect::route('exchange.join')->withErrors($validator)->withInput(Input::all());
 		} else {
-			$exchange = new Exchange;
-			$exchange->name = Input::get('name');
-			if (Input::has('description')) $exchange->description = Input::get('description');
-			$exchange->draw_at = strtotime(Input::get('draw_at'));
-
-			if (Input::has('hidden')) $exchange->hidden = true;
-
-			Auth::User()->made()->save($exchange);
-			return Redirect::to('/');
+			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
+			if ($user == 0) {
+				$exchange->participants()->attach(Auth::User());
+			} else {
+				return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You are already in this exchange']);
+			}
+			return Redirect::route('exchange', ['exchange' => $exchange->slug]);
 		}
 	}
 
+	public function getLeave(Exchange $exchange) {
+		$this->layout->title = 'Leave "' . $exchange->name . '"';
+		$this->layout->nest('content', 'exchange.leave', ['exchange' => $exchange]);
+	}
+
+	public function postLeave(Exchange $exchange) {
+		$rules = array (
+			'' => '',
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::route('exchange.leave')->withErrors($validator)->withInput(Input::all());
+		} else {
+			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
+			if ($user != 0) {
+				$exchange->participants()->detach(Auth::User());
+			} else {
+				return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You aren\'t in this exchange']);
+			}
+			return Redirect::route('home');
+		}
+	}
+
+	public function getDelete(Exchange $exchange) {
+		$this->layout->title = 'Delete Exchange';
+		$this->layout->nest('content', 'exchange.delete', ['exchange' => $exchange]);
+	}
+
+	public function postDelete(Exchange $exchange) {
+		$rules = array (
+			'confirm' => 'required|in:' .  $exchange->name,
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::route('exchange.delete', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
+		} else {
+			$exchange->delete();
+			return Redirect::route('home');
+		}
+	}
+
+
 	public function getExchange(Exchange $exchange)
 	{
-		return View::make('exchange.single')->with('exchange', $exchange);
+		$this->layout->title = $exchange->name;
+		$this->layout->nest('content', 'exchange.single', ['exchange' => $exchange]);
 	}
 }

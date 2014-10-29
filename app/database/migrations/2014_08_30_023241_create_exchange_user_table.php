@@ -19,8 +19,6 @@ class CreateExchangeUserTable extends Migration {
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 			$table->unsignedInteger('exchange_id');
 			$table->foreign('exchange_id')->references('id')->on('exchanges')->onDelete('cascade')->onUpdate('cascade');
-			//$table->unsignedInteger('wishlist_id');
-			//$table->foreign('wishlist_id')->references('id')->on('wishlists')->onDelete('cascade')->onUpdate('cascade');
 		});
 	}
 

@@ -3,7 +3,7 @@
 <head>
 	<meta charset='utf-8'>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>{{ Config::get('settings.site_title') }}</title>
+	<title>{{ (isset($title) ? $title . ' | ' : null) . Config::get('settings.site_title') }}</title>
 
 	<!-- Custom styling -->
 	{{ HTML::style('css/main.css'); }}
@@ -44,7 +44,7 @@
         		<a href='{{ URL::route('dashboard') }}' class='btn btn-primary'>Dashboard</a>
         		<a href='{{ URL::route('logout') }}' class='btn btn-danger'>Logout</a>
         	</div>
-		@else
+		    @else
         {{ Form::open(array('url' => 'login', 'class' => 'navbar-form navbar-right', 'role' => 'form')) }}
             <div class="form-group">
               <input type="text" placeholder="Email" class="form-control">
@@ -60,11 +60,16 @@
     </div>
 
     @if (count($errors) > 0)
-    <div class="container">
-		<div class="alert alert-warning">
-		@foreach ($errors->all() as $error)
-			{{ $error }} <br />
-		@endforeach
-		</div>
-	</div>
-	@endif
+      <div class="container">
+        <div class="alert alert-warning">
+          @foreach ($errors->all() as $error)
+          {{ $error }} <br />
+          @endforeach
+        </div>
+      </div>
+	   @endif
+    @if(isset($title))
+     <div class="container">
+       <h3>{{ $title }}</h3>
+     </div>
+    @endif

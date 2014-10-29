@@ -10,6 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
 Route::bind('exchange', function($value) {
 	return Exchange::where('slug', $value)->firstOrFail();
 });
@@ -25,10 +26,13 @@ Route::bind('user', function($value, $route)
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 
 //Auth Pages
-Route::group(array('before' => 'auth'), function ()
+
+	Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@getLogout', 'before' => 'auth'));
+Route::group(array('prefix' => 'dashboard', 'before' => 'auth'), function ()
 {
-	Route::get('/logout', array('as' => 'logout', 'uses' => 'AuthController@getLogout'));
-	Route::get('/dashboard', array('as' => 'dashboard', 'uses' => 'UserDashboardController@getIndex'));
+	Route::get('/', array('as' => 'dashboard', 'uses' => 'UserDashboardController@getIndex'));
+	Route::get('edit/wishlist', array('as' => 'dashboard.edit.wishlist', 'uses' => 'UserDashboardController@getEditWishlist'));
+	Route::post('edit/wishlist', array('as' => 'dashboard.edit.wishlist', 'uses' => 'UserDashboardController@postEditWishlist'));
 });
 
 Route::group(array('prefix' => 'exchanges'), function ()
@@ -45,13 +49,16 @@ Route::group(array('prefix' => 'exchange/{exchange}'), function ()
 	Route::get('join', array('as' => 'exchange.join', 'uses' => 'ExchangeController@getJoin', 'before' => 'auth'));
 	Route::post('join', array('as' => 'exchange.join', 'uses' => 'ExchangeController@postJoin', 'before' => 'auth'));
 
-	Route::get('delete', array('as' => 'exchange.delete', 'uses' => 'ExchangeController@getDelete', 'before' => 'auth'));
+	Route::get('leave', array('as' => 'exchange.leave', 'uses' => 'ExchangeController@getLeave', 'before' => 'auth'));
+	Route::post('leave', array('as' => 'exchange.leave', 'uses' => 'ExchangeController@postLeave', 'before' => 'auth'));
+
+	Route::get('delete', array('as' => 'exchange.delete', 'uses' => 'ExchangeController@getDelete', 'before' => 'auth|owner'));
+	Route::post('delete', array('as' => 'exchange.delete', 'uses' => 'ExchangeController@postDelete', 'before' => 'auth|owner'));
 });
 
 Route::group(array('prefix' => 'user/{user}'), function ()
 {
 	Route::get('/', array('as' => 'user', 'uses' => 'UserController@getIndex'));
-	Route::get('wishlists', array('as' => 'wishlists', 'uses' => 'UserController@getWishlists'));
 });
 
 //Guest Pages

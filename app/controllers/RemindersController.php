@@ -1,6 +1,6 @@
 <?php
 
-class RemindersController extends Controller {
+class RemindersController extends PageController {
 
 	/**
 	 * Display the password reminder view.
@@ -9,7 +9,8 @@ class RemindersController extends Controller {
 	 */
 	public function getRemind()
 	{
-		return View::make('password.remind');
+		$this->layout->title = 'Password Remind';
+		$this->layout->content = View::make('password.remind');
 	}
 
 	/**
@@ -39,7 +40,8 @@ class RemindersController extends Controller {
 	{
 		if (is_null($token)) App::abort(404);
 
-		return View::make('password.reset')->with('token', $token);
+		$this->layout->title = 'Password Reset';
+		$this->layout->nest('content', 'password.reset', ['token' => $token]);
 	}
 
 	/**

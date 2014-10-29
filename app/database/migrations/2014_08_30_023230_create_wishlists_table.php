@@ -15,8 +15,7 @@ class CreateWishlistsTable extends Migration {
 		Schema::create('wishlists', function($table)
 		{
 			$table->increments('id');
-			$table->string('name', 32);
-			$table->string('URL')->default(null);
+			$table->longText('wishlist')->default(null);
 			$table->unsignedInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 			$table->timestamps();

@@ -1,8 +1,3 @@
-@extends('templates.default')
-
-@section('pagetitle', 'Password Reset')
-
-@section('content')
 <div class='well'>
 {{ Session::get('error') }}
 
@@ -21,4 +16,3 @@
     {{ Form::submit('Reset Password', array('class' => 'btn btn-default')) }}<br />
 {{ Form::close() }}
 </div>
-@stop

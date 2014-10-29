@@ -1,5 +1,5 @@
 <?php
-class AuthController extends BaseController
+class AuthController extends PageController
 {
 	public function postLogin()
 	{
@@ -27,7 +27,8 @@ class AuthController extends BaseController
 
 	public function getLogin()
 	{
-		return View::make('login');
+		$this->layout->title = 'Login';
+		$this->layout->content = View::make('login');
 	} 
 
 	public function getLogout()

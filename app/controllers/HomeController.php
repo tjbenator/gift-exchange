@@ -1,6 +1,6 @@
 <?php
 
-class HomeController extends BaseController {
+class HomeController extends PageController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -17,7 +17,9 @@ class HomeController extends BaseController {
 
 	public function getIndex()
 	{
-		return View::make('home')->with('exchanges', Exchange::where('hidden', 0)->orderBy('id', 'desc')->get());
+		$this->layout->title = 'Home';
+		$exchanges = Exchange::where('hidden', 0)->orderBy('id', 'desc')->get();
+		$this->layout->nest('content', 'home', ['exchanges' => $exchanges]);
 	}
 
 }

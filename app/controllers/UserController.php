@@ -1,12 +1,9 @@
 <?php
-class UserController extends BaseController
+class UserController extends PageController
 {
 	public function getIndex(User $user)
 	{
-		return '';
-	}
-
-	public function getWishlists(User $user) {
-		return View::make('wishlist.main')->with('user', $user);
+		$this->layout->title = $user->username;
+		$this->layout->nest('content', 'user', ['user' => $user]);
 	}
 }

@@ -8,11 +8,4 @@ class Wishlist extends Eloquent
 	public function user() {
 		return $this->belongsTo('User');
 	}
-
-	public function items() {
-		return $this->hasMany('Wishlistitems');
-	}
-
-
-
 }

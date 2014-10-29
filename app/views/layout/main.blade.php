@@ -1,5 +1,5 @@
 @include('templates.partials.header')
 <div class="container">
-	@yield('content', 'No content')
+	{{ $content }}
 </div>
 @include('templates.partials.footer')
