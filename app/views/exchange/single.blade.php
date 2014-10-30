@@ -1,11 +1,9 @@
-@if(!Auth::check() || !Auth::User()->exchanges()->whereName($exchange->name)->count() > 0)
-	<a href='{{URL::action('exchange.join', [$exchange->slug] )}}' class='btn btn-success' style="margin-bottom: 10px;">Join</a>
+@if($exchange->processed)
+	<i class='glyphicon glyphicon-share'></i> Drawing occured on {{ $exchange->draw_at }}
 @else
-	<a href='{{URL::action('exchange.leave', [$exchange->slug] )}}' class='btn btn-warning' style="margin-bottom: 10px;">Leave</a>
+	<i class='glyphicon glyphicon-share'></i> Drawing on {{ $exchange->draw_at }}
 @endif
-@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
-<a href='{{URL::action('exchange.delete', [$exchange->slug] )}}' class='btn btn-danger' style="margin-bottom: 10px;">Delete</a>
-@endif
+@include('templates.partials.controls.exchange')
 <div class='well'>
 {{$exchange->description}}
 </div>
@@ -15,7 +13,7 @@
 	<thead>
 		<tr>
 			<th>
-				Participants
+				Participants <span class="badge">{{$exchange->participants->count()}}</span>
 			</th>
 		</tr>
 	</thead>

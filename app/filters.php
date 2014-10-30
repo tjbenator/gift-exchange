@@ -97,3 +97,12 @@ Route::filter('exchange.owner', function ($route, $request) {
 	
 	return Redirect::route('exchanges')->withErrors(['e' => 'You are not the owner of the "' . $exchange->name . '" exchange!']);
 });
+
+Route::filter('exchange.processed', function ($route, $request) {
+	$exchange = $route->getParameter('exchange');
+	if ($exchange->processed) {
+		return Redirect::route('exchange', [$exchange->slug])->withErrors(['e' => 'This exchange can not be modified because it is past it\'s draw date of ' . $exchange->draw_at]);	
+	}
+	return;
+	
+});

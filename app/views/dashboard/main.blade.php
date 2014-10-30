@@ -9,11 +9,13 @@
 <table class='table table-hover'>
 	<thead>
 		<tr>
-			<th>
-				Exchanges
+			<th class=''>
+				Exchanges you are participating in <span class="badge">{{Auth::User()->exchanges->count()}}</span>
 			</th>
 			<th>
-				Draw On
+				Draw Date
+			</th>
+			<th>
 			</th>
 		</tr>
 	</thead>
@@ -26,6 +28,9 @@
     		<td>
         		{{ $exchange->draw_at }}
     		</td>
+    	    <td>
+        		@include('templates.partials.controls.exchange')
+   			</td>
     	</tr>
     	@endforeach
     </tbody>
@@ -36,10 +41,10 @@
 	<thead>
 		<tr>
 			<th>
-				Exchanges you own
+				Exchanges you own <span class="badge">{{Auth::User()->made()->count()}}</span>
 			</th>
 			<th>
-				Draw On
+				Draw Date
 			</th>
 		</tr>
 	</thead>
@@ -52,6 +57,9 @@
 			<td>
         		{{ $exchange->draw_at }}
     		</td>
+		    <td>
+				@include('templates.partials.controls.exchange')
+			</td>
     	</tr>
     	@endforeach
     </tbody>

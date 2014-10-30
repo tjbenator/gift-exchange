@@ -4,7 +4,7 @@ class ExchangeController extends PageController
 	public function getIndex()
 	{
 		$this->layout->title = 'Exchanges';
-		$this->layout->nest('content', 'exchange.main', ['exchanges' => Exchange::all()]);
+		$this->layout->nest('content', 'exchange.main', ['exchanges' => Exchange::orderBy('id', 'desc')->get()]);
 	}
 
 	public function getCreate()
@@ -64,11 +64,17 @@ class ExchangeController extends PageController
 	}
 
 	public function getLeave(Exchange $exchange) {
+		if ($exchange->processed) {
+			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
+		}
 		$this->layout->title = 'Leave "' . $exchange->name . '"';
 		$this->layout->nest('content', 'exchange.leave', ['exchange' => $exchange]);
 	}
 
 	public function postLeave(Exchange $exchange) {
+		if ($exchange->processed) {
+			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
+		}
 		$rules = array (
 			'' => '',
 		);

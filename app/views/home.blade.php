@@ -19,7 +19,7 @@
           Exchanges
         </th>
         <th>
-          Draw On
+          Draw Date
         </th>
         <th></th>
     </tr>
@@ -32,14 +32,10 @@
         {{$exchange->description}}
     </td>
     <td>
-        {{ $exchange->draw_at }}<br />
+        <i class='glyphicon glyphicon-share'></i> {{ $exchange->draw_at }}
     </td>
     <td>
-      @if(!Auth::check() || !Auth::User()->exchanges()->whereName($exchange->name)->count() > 0)
-        <a href='{{URL::action('exchange.join', [$exchange->slug] )}}' class='btn btn-success' style="margin-bottom: 10px;">Join</a>
-      @else
-        <a href='{{URL::action('exchange.leave', [$exchange->slug] )}}' class='btn btn-warning' style="margin-bottom: 10px;">Leave</a>
-      @endif
+        @include('templates.partials.controls.exchange')
     </td>
 </tr>
 @endforeach

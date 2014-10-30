@@ -20,6 +20,7 @@ class CreateExchangesTable extends Migration {
 			$table->unsignedInteger('creator');
 			$table->foreign('creator')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 			$table->boolean('hidden');
+			$table->boolean('processed')->default(false);
 			$table->integer('draw_at');
 			$table->string('slug');
 			$table->timestamps();
