@@ -7,4 +7,6 @@
 	@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
 	<a href='{{URL::action('exchange.delete', [$exchange->slug] )}}' class='btn btn-danger' style="margin-bottom: 10px;">Delete</a>
 	@endif
+@else
+	<i class='fa fa-key'></i> The drawing has occured for this exchange.
 @endif
