@@ -36,7 +36,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ URL::route('home') }}">{{ Config::get('settings.site_title') }}</a>
+          <a class="navbar-brand" href="{{ URL::route('home') }}"><i class='fa fa-gift'></i> {{ Config::get('settings.site_title') }}</a>
         </div>
         <div class="navbar-collapse collapse">
         @if(Auth::check())

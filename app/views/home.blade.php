@@ -1,10 +1,18 @@
 <div class="jumbotron">
   <div class="container">
     <h1>Welcome to the {{ Config::get('settings.site_title') }}</h1>
-    <p>This is a site where you can do gift exchanges with your friends.</p>
-    @if(!Auth::check())
-    <p><a href='{{URL::route('login')}}' class="btn btn-success btn-lg">Sign in</a> <a href='{{URL::route('register')}}' class="btn btn-primary btn-lg" role="button">Sign Up &raquo;</a></p>
-    @endif        	
+    <p style='text-align: center;'>
+        <i class='fa fa-gift fa-5x'></i>
+	&nbsp;&nbsp;&nbsp;
+        <i class='fa fa-refresh fa-5x fa-spin'></i>
+	&nbsp;&nbsp;&nbsp;
+        <i class='fa fa-gift fa-5x'></i>
+	<br />
+	<br />
+	@if(!Auth::check())
+		<a href='{{URL::route('login')}}' class="btn btn-success btn-lg">Sign in</a> <a href='{{URL::route('register')}}' class="btn btn-primary btn-lg" role="button">Sign Up &raquo;</a>
+	@endif
+    </p>
 </div>
 </div>
 
@@ -32,7 +40,7 @@
         {{$exchange->description}}
     </td>
     <td>
-        <i class='glyphicon glyphicon-share'></i> {{ $exchange->draw_at }}
+        <i class='fa fa-calendar'></i> {{ $exchange->draw_at }}
     </td>
     <td>
         @include('templates.partials.controls.exchange')

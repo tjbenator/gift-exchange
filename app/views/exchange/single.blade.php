@@ -1,8 +1,9 @@
 @if($exchange->processed)
-	<i class='glyphicon glyphicon-share'></i> Drawing occured on {{ $exchange->draw_at }}
+	<i class='fa fa-calendar'></i> Drawing occured on {{ $exchange->draw_at }}
 @else
-	<i class='glyphicon glyphicon-share'></i> Drawing on {{ $exchange->draw_at }}
+	<i class='fa fa-calendar'></i> Drawing on {{ $exchange->draw_at }}
 @endif
+<br />
 @include('templates.partials.controls.exchange')
 <div class='well'>
 {{$exchange->description}}
@@ -13,7 +14,7 @@
 	<thead>
 		<tr>
 			<th>
-				Participants <span class="badge">{{$exchange->participants->count()}}</span>
+				<i class='fa fa-group'></i> Participants <span class="badge">{{$exchange->participants->count()}}</span>
 			</th>
 		</tr>
 	</thead>
