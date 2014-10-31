@@ -8,7 +8,8 @@ class RegistrationController extends PageController
 		$rules = array(
 			'username' => 'required|min:3|max:32',
 			'email' => 'required|email',
-			'password' => 'required|confirmed|min:8'
+			'password' => 'required|confirmed|min:8',
+			'currency' => 'required|exists:currency,code'
 			);
 
 		$validator = Validator::make($data, $rules);
@@ -19,6 +20,7 @@ class RegistrationController extends PageController
 			$user->username = Input::get('username');
 			$user->email = Input::get('email');
 			$user->password = Hash::make(Input::get('password'));
+			$user->currency = Input::get('currency');
 			$user->save();
 			Auth::login($user);
 			return Redirect::to('/');	

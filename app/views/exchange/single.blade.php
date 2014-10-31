@@ -1,3 +1,4 @@
+<strong>Spending Limit:</strong> @currency($exchange->spending_limit, Auth::User()->currency)<br />
 @if($exchange->processed)
 	<i class='fa fa-calendar'></i> Drawing occured on {{ $exchange->draw_at }}
 @else

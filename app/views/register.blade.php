@@ -20,6 +20,10 @@
 	{{ Form::email('email', Input::old('email'), array('placeholder' => 'your@email.com', 'class' => 'form-control')) }}
 	</div>
 	
+	<div class="form-group">
+		{{ Form::label('currency', 'Currency') }}
+		{{ Form::select('currency', DB::table('currency')->lists('code', 'code')) }}
+	</div>
 {{ Form::submit('Register', array('class' => 'btn btn-default')) }}
 </div>
 {{ Form::close() }}
