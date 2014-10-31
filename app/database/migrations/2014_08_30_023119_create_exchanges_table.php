@@ -17,6 +17,7 @@ class CreateExchangesTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 32);
 			$table->longText('description');
+			$table->decimal('spending_limit', 5, 0);
 			$table->unsignedInteger('creator');
 			$table->foreign('creator')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 			$table->boolean('hidden');

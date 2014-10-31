@@ -123,6 +123,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		'Cviebrock\EloquentSluggable\SluggableServiceProvider',
+		'Torann\Currency\CurrencyServiceProvider',
 	),
 
 	/*
@@ -190,6 +191,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 
+		'Currency' => 'Torann\Currency\Facades\Currency',
 	),
 
 );
