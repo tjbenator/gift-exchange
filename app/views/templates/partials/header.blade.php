@@ -41,6 +41,7 @@
         <div class="navbar-collapse collapse">
         @if(Auth::check())
         	<div class="navbar-form navbar-right">
+            <a href='{{ URL::route('user', Auth::user()->username) }}' class='btn btn-primary'>Profile</a>
         		<a href='{{ URL::route('dashboard') }}' class='btn btn-primary'>Dashboard</a>
         		<a href='{{ URL::route('logout') }}' class='btn btn-danger'>Logout</a>
         	</div>

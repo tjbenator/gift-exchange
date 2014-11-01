@@ -1,3 +1,4 @@
+<a href='{{URL::action('dashboard.account')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Account</a>
 <a href='{{URL::action('dashboard.edit.wishlist')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Wishlist</a>
 @if (Auth::User()->wishlist())
 <div class='well'>

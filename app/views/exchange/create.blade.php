@@ -17,7 +17,9 @@
 				<div class="input-group">
 					<div class="input-group-addon">$</div>
 					{{ Form::number('spending_limit', null, array('class' => 'form-control', 'placeholder' => 'In USD')) }}
-					<div class="input-group-addon">.00</div>
+					<div class="input-group-addon">
+						.00
+					</div>
 				</div>
 			</div>
 		</div>

@@ -19,7 +19,7 @@ class ExchangeController extends PageController
 			'name' => 'required|min:3|max:32',
 			'description' => 'max:1024',
 			'draw_at' => 'required|date',
-			'spending_limit' => 'required|integer|min:1|max:999'
+			'spending_limit' => 'required|integer|min:1|max:999',
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -32,7 +32,6 @@ class ExchangeController extends PageController
 			if (Input::has('description')) $exchange->description = Input::get('description');
 			$exchange->draw_at = strtotime(Input::get('draw_at'));
 			$exchange->spending_limit = Input::get('spending_limit');
-
 			if (Input::has('hidden')) $exchange->hidden = true;
 
 			Auth::User()->made()->save($exchange);

@@ -33,4 +33,53 @@ class UserDashboardController extends PageController
 			return Redirect::route('dashboard');
 		}
 	}
+
+	public function getEditAccount()
+	{
+		$this->layout->title = 'Dashboard - Account';
+		$this->layout->content = View::make('dashboard.account');
+	}
+
+
+	public function postEditAccount()
+	{
+		$data = Input::all();
+
+		$rules = array(
+			'email' => 'email',
+			'about' => 'max:1024',
+			'newpassword' => 'confirmed|min:8',
+			'currency' => 'required|exists:currency,code',
+			'password' => 'required'
+			);
+		if ( Auth::validate(array('username' => Auth::User()->username, 'password' => Input::get('password'))) )
+		{
+			$messages = array(
+				'newpassword.min' => 'Your new password must be at least :min characters',
+				'newpassword.confirmed' => 'Your new passwords do not match'
+				);
+			$validator = Validator::make($data, $rules, $messages);
+
+			if ($validator->passes()) 
+			{
+				$user = Auth::User();				
+				if (Input::has('email')) 
+				{
+					$user->email = Input::get('email');
+				}
+				if (Input::has('newpassword'))
+				{
+					$user->password = Hash::make(Input::get('newpassword'));
+				}
+
+				$user->currency = Input::get('currency');
+
+				$user->save();
+				return Redirect::route('dashboard');	
+			}
+		} else {
+			return Redirect::route('dashboard.account')->withErrors(array('invalidpassword' => 'Invalid old password'));		
+		}
+		return Redirect::route('dashboard.account')->withErrors($validator);
+	}
 }

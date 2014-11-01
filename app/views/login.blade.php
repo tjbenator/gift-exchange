@@ -9,9 +9,6 @@
 	{{ Form::label('password', 'Password') }}
 	{{ Form::password('password', array('class' => 'form-control')) }}
 	</div>
-{{ Form::submit('Sign In', array('class' => "btn btn-default")) }}
+{{ Form::submit('Sign In', array('class' => "btn btn-success")) }} <a class="btn btn-warning" href="{{ URL::to('password/remind') }}">Forgot your password?</a>
 {{ Form::close() }}
-<p>
-<a href="{{ URL::to('password/remind') }}">Forgot your password?</a>
-</p>
 </div>

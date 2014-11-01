@@ -31,6 +31,10 @@ Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 Route::group(array('prefix' => 'dashboard', 'before' => 'auth'), function ()
 {
 	Route::get('/', array('as' => 'dashboard', 'uses' => 'UserDashboardController@getIndex'));
+
+	Route::get('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@getEditAccount'));
+	Route::post('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@postEditAccount'));
+
 	Route::get('edit/wishlist', array('as' => 'dashboard.edit.wishlist', 'uses' => 'UserDashboardController@getEditWishlist'));
 	Route::post('edit/wishlist', array('as' => 'dashboard.edit.wishlist', 'uses' => 'UserDashboardController@postEditWishlist'));
 });

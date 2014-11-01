@@ -22,11 +22,11 @@
 	
 	<div class="form-group">
 		{{ Form::label('currency', 'Currency') }}
-		{{ Form::select('currency', DB::table('currency')->lists('code', 'code')) }}
+		{{ Form::select('currency', DB::table('currency')->lists('title', 'code')) }}
 	</div>
 {{ Form::submit('Register', array('class' => 'btn btn-default')) }}
 </div>
 {{ Form::close() }}
 <p>
-<a href="{{ URL::to('password/remind') }}">Forgot your password?</a>
+<a class="btn btn-warning" href="{{ URL::to('password/remind') }}">Forgot your password?</a>
 </p>
