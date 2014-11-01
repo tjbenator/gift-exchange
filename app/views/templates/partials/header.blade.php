@@ -45,14 +45,14 @@
         		<a href='{{ URL::route('logout') }}' class='btn btn-danger'>Logout</a>
         	</div>
 		    @else
-        {{ Form::open(array('url' => 'login', 'class' => 'navbar-form navbar-right', 'role' => 'form')) }}
+        {{ Form::open(array('route' => 'login', 'class' => 'navbar-form navbar-right', 'role' => 'form')) }}
             <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
+              {{ Form::text('username', Input::old('username'), array('placeholder' => 'Username', 'autofocus', 'class' => 'form-control')) }}
             </div>
             <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
+              {{ Form::password('password', array('placeholder' => 'Password', 'class' => 'form-control')) }}
             </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
+            {{ Form::submit('Sign In', array('class' => "btn btn-success")) }}
         {{ Form::close() }}
         @endif
         </div><!--/.navbar-collapse -->
