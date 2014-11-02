@@ -26,4 +26,13 @@ class Exchange extends Eloquent implements SluggableInterface
 		return $this->belongsToMany('User');
 	}
 
+	public function rawDrawAt() {
+		return $this->attributes['draw_at'];
+	}
+
+	public function surprises()
+	{
+		return $this->hasMany('Surprise');
+	}
+
 }

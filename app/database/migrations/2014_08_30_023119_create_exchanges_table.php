@@ -20,9 +20,10 @@ class CreateExchangesTable extends Migration {
 			$table->decimal('spending_limit', 5, 0);
 			$table->unsignedInteger('creator');
 			$table->foreign('creator')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-			$table->boolean('hidden');
+			$table->boolean('hidden')->default(false);
 			$table->boolean('processed')->default(false);
 			$table->integer('draw_at');
+			$table->integer('give_at');
 			$table->string('slug');
 			$table->timestamps();
 		});

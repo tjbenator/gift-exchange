@@ -37,7 +37,42 @@ class ExchangeProcess extends Command {
 	 */
 	public function fire()
 	{
-		$this->info('GO GO GO');
+		foreach (Exchange::whereProcessed(false)->get() as $exchange) {
+			if ($exchange->rawDrawAt() <= time()) {
+				$this->info('Drawing for exchange "' . $exchange->name . '"');
+				// For each user in exchange
+				$users = $exchange->participants()->orderByRaw('RAND()')->get();
+				$length = count($users);
+				foreach ($users as $key => $giver) {
+					if ($key == $length - 1) {
+						$gifty = $users[0];
+					} else {
+						$gifty = $users[$key + 1];
+					}
+					//Store
+					$this->info($giver->id . ' will be giving a gift to ' . $gifty->id);
+					$surprise = new Surprise;
+					$surprise->gifty()->associate($gifty);
+					$surprise->giver()->associate($giver);
+					$exchange->surprises()->save($surprise);
+					//Email
+					// Mail::send('emails.exchanges.drawing', array('giver' => $giver, 'gifty' => $gifty, 'exchange' => $exchange), function($message) use ($exchange, $giver)
+					// {
+					// 	//Test Emails
+					// 	$message->to('test@binarypenguin.net', $giver->username)->subject($exchange->name . ' drawing!');
+    	// 				//$message->to($giver->email, $giver->username)->subject($exchange->name . ' drawing!');
+					// });
+				}
+
+				// Mark as processed
+				$exchange->processed = true;
+				$exchange->save();
+			} else {
+				// Skip
+				$this->info(ceil(($exchange->rawDrawAt() - time()) / 60 / 60 / 24) . ' days left on ' . $exchange->name);
+			}
+		}
+		$this->info('Done.');
 	}
 
 	/**
@@ -47,6 +82,7 @@ class ExchangeProcess extends Command {
 	 */
 	protected function getArguments()
 	{
+		return [];
 		// return array(
 		// 	array('example', InputArgument::REQUIRED, 'An example argument.'),
 		// );
@@ -59,6 +95,7 @@ class ExchangeProcess extends Command {
 	 */
 	protected function getOptions()
 	{
+		return [];
 		// return array(
 		// 	array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
 		// ;
