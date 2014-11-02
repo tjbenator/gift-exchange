@@ -25,6 +25,7 @@ class CreateExchangesTable extends Migration {
 			$table->integer('draw_at');
 			$table->integer('give_at');
 			$table->string('slug');
+			$table->softDeletes();
 			$table->timestamps();
 		});
 	}
