@@ -17,6 +17,9 @@
 				Draw Date
 			</th>
 			<th>
+				Give Date
+			</th>
+			<th>
 			</th>
 		</tr>
 	</thead>
@@ -36,6 +39,9 @@
 	    		<td>
 	        		{{ $exchange->draw_at }}
 	    		</td>
+	    		<td>
+	    			{{ $exchange->give_at }}
+	    		</td>
 	    	    <td>
 	        		@include('templates.partials.controls.exchange')
 	   			</td>
@@ -51,10 +57,13 @@
 	<thead>
 		<tr>
 			<th>
-				Exchanges you own <span class="badge">{{Auth::User()->made()->count()}}</span>
+				Exchanges owned by you <span class="badge">{{Auth::User()->made()->count()}}</span>
 			</th>
 			<th>
 				Draw Date
+			</th>
+			<th>
+				Give At
 			</th>
 		</tr>
 	</thead>
@@ -62,6 +71,7 @@
 	   	@if(Auth::User()->made()->count() < 1)
     	<tr>
     		<td> <i class='fa fa-gift fa-3x'></i></td>
+    		<td></td>
     		<td></td>
     		<td></td>
     	</tr>
@@ -73,6 +83,9 @@
 	    		</td>
 				<td>
 	        		{{ $exchange->draw_at }}
+	    		</td>
+	    		<td>
+	    			{{ $exchange->give_at }}
 	    		</td>
 			    <td>
 					@include('templates.partials.controls.exchange')
