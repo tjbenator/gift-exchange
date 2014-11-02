@@ -3,3 +3,12 @@ body {
   padding-top: 80px;
   padding-bottom: 20px;
 }
+
+tr {
+	height: 80px;
+}
+
+td {
+	vertical-align: middle !important;
+	font-size: 18px;
+}
