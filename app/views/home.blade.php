@@ -28,6 +28,9 @@
         Draw Date
       </th>
       <th>
+        Give Date
+      </th>
+      <th>
       </th>
     </tr>
   </thead>
@@ -39,6 +42,9 @@
         </td>
         <td>
             {{ $exchange->draw_at }}
+        </td>
+        <td>
+            {{ $exchange->give_at }}
         </td>
           <td>
             @include('templates.partials.controls.exchange')

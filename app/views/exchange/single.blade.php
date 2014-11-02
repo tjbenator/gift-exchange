@@ -1,7 +1,7 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-4">
-			<i class="fa fa-money"></i> 
+		<div class="col-md-3">
+			<i class="fa fa-money"></i> <strong>Spending Limit:</strong>
 			@if(Auth::check())
 				@currency($exchange->spending_limit, Auth::User()->currency)<br />
 			@else
@@ -9,7 +9,7 @@
 			@endif
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-3">
 			@if($exchange->processed)
 				<i class='fa fa-calendar'></i> Drawing occured on {{ $exchange->draw_at }}
 			@else
@@ -17,12 +17,15 @@
 			@endif
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-3">
 			@if($exchange->rawGiveAt() >= time())
 				<i class='fa fa-calendar'></i> Results will be displayed on {{ $exchange->give_at }}
 			@else
 				<i class='fa fa-calendar'></i> Results were released as of {{ $exchange->give_at }}
 			@endif
+		</div>
+		<div class="col-md-3">
+			<i class='fa fa-user'></i> {{ $exchange->creator()->pluck('username') }}
 		</div>
 	</div>
 </div>
