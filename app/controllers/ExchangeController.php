@@ -16,10 +16,11 @@ class ExchangeController extends PageController
 	public function postCreate() 
 	{
 		$rules = array (
-			'name' => 'required|min:3|max:32',
+			'name' => 'required|max:32',
 			'description' => 'max:1024',
 			'draw_at' => 'required|date',
 			'give_at' => 'required|date',
+			'passphrase' => 'required|min:3|max:32',
 			'spending_limit' => 'required|integer|min:1|max:999',
 		);
 
@@ -34,6 +35,7 @@ class ExchangeController extends PageController
 			$exchange->draw_at = strtotime(Input::get('draw_at'));
 			$exchange->give_at = strtotime(Input::get('give_at'));
 			$exchange->spending_limit = Input::get('spending_limit');
+			$exchange->passphrase = Input::get('passphrase', null);
 			if (Input::has('hidden')) $exchange->hidden = true;
 
 			Auth::User()->made()->save($exchange);
@@ -48,13 +50,13 @@ class ExchangeController extends PageController
 
 	public function postJoin(Exchange $exchange) {
 		$rules = array (
-			'' => '',
+			'passphrase' => 'required|in:' . $exchange->passphrase,
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) {
-			return Redirect::route('exchange.join')->withErrors($validator)->withInput(Input::all());
+			return Redirect::route('exchange.join', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
 		} else {
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
 			if ($user == 0) {

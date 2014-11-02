@@ -21,19 +21,28 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach(Auth::User()->exchanges()->get() as $exchange)
-	    <tr>
-    		<td>
-    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
-    		</td>
-    		<td>
-        		{{ $exchange->draw_at }}
-    		</td>
-    	    <td>
-        		@include('templates.partials.controls.exchange')
-   			</td>
+	   	@if(Auth::User()->exchanges()->count() < 1)
+    	<tr>
+    		<td> <i class='fa fa-gift fa-3x'></i></td>
+    		<td></td>
+    		<td></td>
     	</tr>
-    	@endforeach
+    	@else
+			@foreach(Auth::User()->exchanges()->get() as $exchange)
+		    <tr>
+	    		<td>
+	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
+	    		</td>
+	    		<td>
+	        		{{ $exchange->draw_at }}
+	    		</td>
+	    	    <td>
+	        		@include('templates.partials.controls.exchange')
+	   			</td>
+	    	</tr>
+	    	@endforeach
+ 
+    	@endif
     </tbody>
 </table>
 
@@ -50,18 +59,26 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach(Auth::User()->made()->get() as $exchange)
-	    <tr>
-    		<td>
-    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
-    		</td>
-			<td>
-        		{{ $exchange->draw_at }}
-    		</td>
-		    <td>
-				@include('templates.partials.controls.exchange')
-			</td>
+	   	@if(Auth::User()->made()->count() < 1)
+    	<tr>
+    		<td> <i class='fa fa-gift fa-3x'></i></td>
+    		<td></td>
+    		<td></td>
     	</tr>
-    	@endforeach
+    	@else
+			@foreach(Auth::User()->made()->get() as $exchange)
+		    <tr>
+	    		<td>
+	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
+	    		</td>
+				<td>
+	        		{{ $exchange->draw_at }}
+	    		</td>
+			    <td>
+					@include('templates.partials.controls.exchange')
+				</td>
+	    	</tr>
+	    	@endforeach
+	    @endif
     </tbody>
 </table>
