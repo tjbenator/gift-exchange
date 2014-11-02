@@ -25,8 +25,13 @@
 			@endif
 		</div>
 		<div class="col-md-3">
-			<i class='fa fa-user'></i> {{ $exchange->creator()->pluck('username') }}
+			<i class='fa fa-user'></i> <strong>Creator:</strong> {{ $exchange->creator()->pluck('username') }}
 		</div>
+		@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
+			<div class="col-md-3">
+				<i class="fa fa-lock"></i> <strong>Passphrase:</strong> {{ $exchange->passphrase }}
+			</div>
+		@endif
 	</div>
 </div>
 

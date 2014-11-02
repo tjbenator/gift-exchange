@@ -10,9 +10,19 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+App::missing(function ($exception) {
+	$layout = View::make("layout.main");
+	$layout->title = 'Not Found';
+	$layout->content = View::make("errors.missing")->with('exception', $exception->getMessage());
+
+	return Response::make($layout, 404);
+});
+
 
 Route::bind('exchange', function($value) {
-	return Exchange::where('slug', $value)->firstOrFail();
+	$exchange = Exchange::where('slug', $value)->first();
+	if ($exchange) return $exchange;
+	App::abort(404, 'Exchange not found!');
 });
 
 Route::bind('user', function($value, $route)
