@@ -14,8 +14,13 @@ class Exchange extends Eloquent implements SluggableInterface
 	protected $table = 'exchanges';
 	
 	public function getDrawAtAttribute($attr) {        
-    	return date('F jS', $attr);
+    	return date('F jS, Y', $attr);
     }
+
+    public function getGiveAtAttribute($attr) {        
+    	return date('F jS, Y', $attr);
+    }
+
 	public function creator()
 	{
 		return $this->belongsTo('User', 'creator', 'id');
@@ -28,6 +33,10 @@ class Exchange extends Eloquent implements SluggableInterface
 
 	public function rawDrawAt() {
 		return $this->attributes['draw_at'];
+	}
+
+	public function rawGiveAt() {
+		return $this->attributes['give_at'];
 	}
 
 	public function surprises()

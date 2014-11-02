@@ -29,6 +29,12 @@
 				{{ Form::input('date', 'draw_at', null, array('class' => 'form-control')) }} 
 			</div>
 		</div>
+		<div class="col-xs-3">
+			<div class="form-group">
+				{{ Form::label('give_at', 'Give At') }}
+				{{ Form::input('date', 'give_at', null, array('class' => 'form-control')) }} 
+			</div>
+		</div>
 	</div>
 
 	<div class="checkbox">

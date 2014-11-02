@@ -56,12 +56,12 @@ class ExchangeProcess extends Command {
 					$surprise->giver()->associate($giver);
 					$exchange->surprises()->save($surprise);
 					//Email
-					// Mail::send('emails.exchanges.drawing', array('giver' => $giver, 'gifty' => $gifty, 'exchange' => $exchange), function($message) use ($exchange, $giver)
-					// {
-					// 	//Test Emails
-					// 	$message->to('test@binarypenguin.net', $giver->username)->subject($exchange->name . ' drawing!');
-    	// 				//$message->to($giver->email, $giver->username)->subject($exchange->name . ' drawing!');
-					// });
+					Mail::send('emails.exchanges.drawing', array('giver' => $giver, 'gifty' => $gifty, 'exchange' => $exchange), function($message) use ($exchange, $giver)
+					{
+						//Test Emails
+						//$message->to('test@binarypenguin.net', $giver->username)->subject($exchange->name . ' drawing!');
+    					$message->to($giver->email, $giver->username)->subject($exchange->name . ' drawing!');
+					});
 				}
 
 				// Mark as processed

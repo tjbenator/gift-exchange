@@ -19,6 +19,7 @@ class ExchangeController extends PageController
 			'name' => 'required|min:3|max:32',
 			'description' => 'max:1024',
 			'draw_at' => 'required|date',
+			'give_at' => 'required|date',
 			'spending_limit' => 'required|integer|min:1|max:999',
 		);
 
@@ -31,6 +32,7 @@ class ExchangeController extends PageController
 			$exchange->name = Input::get('name');
 			if (Input::has('description')) $exchange->description = Input::get('description');
 			$exchange->draw_at = strtotime(Input::get('draw_at'));
+			$exchange->give_at = strtotime(Input::get('give_at'));
 			$exchange->spending_limit = Input::get('spending_limit');
 			if (Input::has('hidden')) $exchange->hidden = true;
 
