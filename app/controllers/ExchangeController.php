@@ -58,6 +58,9 @@ class ExchangeController extends PageController
 		if ($validator->fails()) {
 			return Redirect::route('exchange.join', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
 		} else {
+			if (Auth::User()->wishlist()->count() == 0) {
+				return Redirect::route('dashboard.edit.wishlist')->withErrors(['e' => 'You must add items to your wishlist before joining an exchange!']);				
+			}
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
 			if ($user == 0) {
 				$exchange->participants()->attach(Auth::User());
