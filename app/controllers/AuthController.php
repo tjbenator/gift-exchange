@@ -18,7 +18,7 @@ class AuthController extends PageController
 				'password' => Input::get('password')
 				);
 			if (Auth::attempt($userdata)) {
-				return Redirect::intended('/');
+				return Redirect::intended(URL::previous());
 			} else {
 				return Redirect::to('login')->withErrors(array('failed' => 'Invalid Credentials'));
 			}
@@ -34,7 +34,7 @@ class AuthController extends PageController
 	public function getLogout()
 	{
 		Auth::logout();
-		return Redirect::to('/');
+		return Redirect::to(URL::previous());
 	}
 
 }
