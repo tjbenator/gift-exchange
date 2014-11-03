@@ -30,7 +30,13 @@
 			</div>
 		</div>
 
-		<div class="col-md-1">
+		<div class="col-md-3 hidden-md hidden-lg">
+			<div class="exchange-stage">
+				<i class='fa fa-long-arrow-down fa-4x exchange-stage-arrow'></i>
+			</div>
+		</div>
+
+		<div class="col-md-1 hidden-sm">
 			<div class="exchange-stage">
 				<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
 			</div>
@@ -52,8 +58,14 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="col-md-3  hidden-md hidden-lg">
+			<div class="exchange-stage">
+				<i class='fa fa-long-arrow-down fa-4x exchange-stage-arrow'></i>
+			</div>
+		</div>
 		
-		<div class="col-md-1">
+		<div class="col-md-1  hidden-sm">
 			<div class="exchange-stage">
 				<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
 			</div>
@@ -112,7 +124,7 @@
     				<a href='{{ URL::route('user', [$surprise->giver->username]) }}'>{{ $surprise->giver->username }}</a>
     			</td>
     			<td>
-    				<i class='fa fa-long-arrow-right fa-5x'></i>
+					<i class='fa fa-gift fa-5x'></i>&nbsp;&nbsp;&nbsp;<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
     				<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>{{ $surprise->gifty->username }}</a>
@@ -126,7 +138,7 @@
     				<a href='{{ URL::route('user', [$participant->username]) }}'>{{$participant->username}}</a>
     			</td>
     			<td>
-					<i class='fa fa-long-arrow-right fa-5x'></i>
+					<i class='fa fa-gift fa-5x'></i>&nbsp;&nbsp;&nbsp;<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
     				???
