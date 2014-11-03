@@ -17,3 +17,11 @@ td {
 	vertical-align: middle !important;
 	height: 150px;
 }
+
+.exchange-stage-arrow {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}

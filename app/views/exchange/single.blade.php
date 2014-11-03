@@ -31,7 +31,9 @@
 		</div>
 
 		<div class="col-md-1">
-			<i class='fa fa-long-arrow-right fa-4x'></i>
+			<div class="exchange-stage">
+				<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
+			</div>
 		</div>
 
 		<div class="col-md-4">
@@ -44,14 +46,17 @@
 				<div class="panel-body">
 					<i class='fa fa-calendar'></i> {{ $exchange->draw_at }}<br />
 					@if($exchange->processed && time() < $exchange->rawGiveAt() )
-						<i class='fa fa-key'></i> No changes can be made
+						<i class='fa fa-key'></i> No changes can be made<br />
+						<i class='fa fa-envelope'></i> Check your email
 					@endif
 				</div>
 			</div>
 		</div>
 		
 		<div class="col-md-1">
-			<i class='fa fa-long-arrow-right fa-4x'></i>
+			<div class="exchange-stage">
+				<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
+			</div>
 		</div>
 
 		<div class="col-md-3">
@@ -62,7 +67,10 @@
 			@endif
 				<div class="panel-heading"><strong>Results</strong></div>
 				<div class="panel-body">
-					<i class='fa fa-calendar'></i> {{ $exchange->give_at }}
+					<i class='fa fa-calendar'></i> {{ $exchange->give_at }}<br />
+					@if(time() >= $exchange->rawGiveAt())
+						<i class='fa fa-bullhorn'></i> Results are below
+					@endif
 				</div>
 			</div>
 	</div>
