@@ -121,7 +121,7 @@
 	<tbody>
 		@if($exchange->processed)
 			@foreach($exchange->surprises()->orderByRaw('RAND()')->get() as $surprise)
-			@if ($surprise->giver == Auth::User() || ($surprise->gifty == Auth::User() && $exchange->rawGiveAt() <= time()))
+			@if (Auth::check() && ($surprise->giver == Auth::User() || ($surprise->gifty == Auth::User() && $exchange->rawGiveAt() <= time())))
 	    	<tr class="info">
 	    	@else
 	    	<tr>
@@ -133,7 +133,7 @@
 					<i class='fa fa-gift fa-5x'></i>&nbsp;&nbsp;&nbsp;<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
-				@if($exchange->rawGiveAt() <= time() || Auth::User()->id === $surprise->giver->id)
+				@if($exchange->rawGiveAt() <= time() || (Auth::check() && Auth::User()->id === $surprise->giver->id))
     					<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>{{ $surprise->gifty->username }}</a>
 				@else
 					???
