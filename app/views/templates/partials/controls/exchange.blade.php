@@ -1,12 +1,10 @@
-@if(!$exchange->processed)
+<div class="btn-group">
 	@if(!Auth::check() || !Auth::User()->exchanges()->whereName($exchange->name)->count() > 0)
-		<a href='{{URL::action('exchange.join', [$exchange->slug] )}}' class='btn btn-success' style="margin-bottom: 10px;">Join</a>
+		<a href='{{URL::action('exchange.join', [$exchange->slug] )}}' class='btn btn-success @if($exchange->processed) disabled @endif' style="margin-bottom: 10px;">Join</a>
 	@else
-		<a href='{{URL::action('exchange.leave', [$exchange->slug] )}}' class='btn btn-warning' style="margin-bottom: 10px;">Leave</a>
+		<a href='{{URL::action('exchange.leave', [$exchange->slug] )}}' class='btn btn-warning @if($exchange->processed) disabled @endif' style="margin-bottom: 10px;">Leave</a>
 	@endif
 	@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
-	<a href='{{URL::action('exchange.delete', [$exchange->slug] )}}' class='btn btn-danger' style="margin-bottom: 10px;">Delete</a>
+		<a href='{{URL::action('exchange.delete', [$exchange->slug] )}}' class='btn btn-danger @if($exchange->processed) disabled @endif' style="margin-bottom: 10px;">Delete</a>
 	@endif
-@else
-	<i class='fa fa-key'></i> The drawing has occured for this exchange.
-@endif
+</div>

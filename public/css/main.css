@@ -12,3 +12,8 @@ td {
 	vertical-align: middle !important;
 	font-size: 18px;
 }
+
+.exchange-stage {
+	vertical-align: middle !important;
+	height: 150px;
+}

@@ -1,37 +1,70 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-3">
-			<i class="fa fa-money"></i> <strong>Spending Limit:</strong>
-			@if(Auth::check())
-				@currency($exchange->spending_limit, Auth::User()->currency)<br />
+			@if(!$exchange->processed)
+			<div class="panel panel-primary exchange-stage">
 			@else
-				@currency($exchange->spending_limit)<br />
+			<div class="panel panel-default exchange-stage">
 			@endif
-		</div>
+  				<div class="panel-heading"><strong>Exchange Created</strong></div>
+  				<div class="panel-body">
+					<abbr title='Spending Limit' class='initialism'>
+						<i class="fa fa-money"></i>
+						@if(Auth::check())
+							@currency($exchange->spending_limit, Auth::User()->currency)
+						@else
+							@currency($exchange->spending_limit)<br />
+						@endif
+					</abbr><br />
 
-		<div class="col-md-3">
-			@if($exchange->processed)
-				<i class='fa fa-calendar'></i> Drawing occured on {{ $exchange->draw_at }}
-			@else
-				<i class='fa fa-calendar'></i> Drawing on {{ $exchange->draw_at }}
-			@endif
-		</div>
+					<abbr title='Creator' class='initialism'>
+						<i class='fa fa-user'></i>  {{ $exchange->creator()->pluck('username') }}
+					</abbr><br />
 
-		<div class="col-md-3">
-			@if($exchange->rawGiveAt() >= time())
-				<i class='fa fa-calendar'></i> Results will be displayed on {{ $exchange->give_at }}
-			@else
-				<i class='fa fa-calendar'></i> Results were released as of {{ $exchange->give_at }}
-			@endif
-		</div>
-		<div class="col-md-3">
-			<i class='fa fa-user'></i> <strong>Creator:</strong> {{ $exchange->creator()->pluck('username') }}
-		</div>
-		@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
-			<div class="col-md-3">
-				<i class="fa fa-lock"></i> <strong>Passphrase:</strong> {{ $exchange->passphrase }}
+					@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
+						<abbr title='Passphrase' class='initialism'>
+							<i class="fa fa-lock"></i> {{ $exchange->passphrase }}
+						</abbr>
+					@endif
+				</div>
 			</div>
-		@endif
+		</div>
+
+		<div class="col-md-1">
+			<i class='fa fa-long-arrow-right fa-4x'></i>
+		</div>
+
+		<div class="col-md-4">
+			@if($exchange->processed && time() < $exchange->rawGiveAt() )
+				<div class="panel panel-primary exchange-stage">
+			@else
+				<div class="panel panel-default exchange-stage">
+			@endif
+				<div class="panel-heading"><strong>Drawing</strong></div>
+				<div class="panel-body">
+					<i class='fa fa-calendar'></i> {{ $exchange->draw_at }}<br />
+					@if($exchange->processed && time() < $exchange->rawGiveAt() )
+						<i class='fa fa-key'></i> No changes can be made
+					@endif
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-1">
+			<i class='fa fa-long-arrow-right fa-4x'></i>
+		</div>
+
+		<div class="col-md-3">
+			@if(time() >= $exchange->rawGiveAt())
+				<div class="panel panel-primary exchange-stage">
+			@else
+				<div class="panel panel-default exchange-stage">
+			@endif
+				<div class="panel-heading"><strong>Results</strong></div>
+				<div class="panel-body">
+					<i class='fa fa-calendar'></i> {{ $exchange->give_at }}
+				</div>
+			</div>
 	</div>
 </div>
 
@@ -71,7 +104,7 @@
     				<a href='{{ URL::route('user', [$surprise->giver->username]) }}'>{{ $surprise->giver->username }}</a>
     			</td>
     			<td>
-    				<i class='fa fa-arrow-right fa-5x'></i>
+    				<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
     				<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>{{ $surprise->gifty->username }}</a>
@@ -85,7 +118,7 @@
     				<a href='{{ URL::route('user', [$participant->username]) }}'>{{$participant->username}}</a>
     			</td>
     			<td>
-					<i class='fa fa-arrow-right fa-5x'></i>
+					<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
     				???
