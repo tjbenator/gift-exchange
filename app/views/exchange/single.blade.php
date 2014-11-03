@@ -27,6 +27,10 @@
 						<abbr title='Passphrase' class='initialism'>
 							<i class="fa fa-lock"></i> {{ $exchange->passphrase }}
 						</abbr>
+						<br />
+					@endif
+					@if(!$exchange->processed)
+						<i class="fa fa-check-square"></i> Join now!
 					@endif
 				</div>
 			</div>
