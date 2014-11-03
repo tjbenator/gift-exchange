@@ -18,7 +18,9 @@
 					</abbr><br />
 
 					<abbr title='Creator' class='initialism'>
-						<i class='fa fa-user'></i>  {{ $exchange->creator()->pluck('username') }}
+						<a href="{{ URL::route('user', [$exchange->creator()->pluck('username')]) }}">
+							<i class='fa fa-user'></i>  {{ $exchange->creator()->pluck('username') }}
+						</a>
 					</abbr><br />
 
 					@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
@@ -72,7 +74,7 @@
 		</div>
 
 		<div class="col-md-3">
-			@if(time() >= $exchange->rawGiveAt())
+			@if(time() >= $exchange->rawGiveAt() && $exchange->processed)
 				<div class="panel panel-primary exchange-stage">
 			@else
 				<div class="panel panel-default exchange-stage">
@@ -80,7 +82,7 @@
 				<div class="panel-heading"><strong>Results</strong></div>
 				<div class="panel-body">
 					<i class='fa fa-calendar'></i> {{ $exchange->give_at }}<br />
-					@if(time() >= $exchange->rawGiveAt())
+					@if(time() >= $exchange->rawGiveAt() && $exchange->processed)
 						<i class='fa fa-bullhorn'></i> Results are below
 					@endif
 				</div>
@@ -113,10 +115,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		@if($exchange->rawGiveAt() <= time() && $exchange->processed)
+		@if($exchange->processed)
 			@foreach($exchange->surprises()->orderByRaw('RAND()')->get() as $surprise)
-			@if ($surprise->giver == Auth::User() || $surprise->gifty == Auth::User())
-	    	<tr class="success">
+			@if ($surprise->giver == Auth::User() || ($surprise->gifty == Auth::User() && $exchange->rawGiveAt() <= time()))
+	    	<tr class="info">
 	    	@else
 	    	<tr>
 	    	@endif
@@ -127,7 +129,11 @@
 					<i class='fa fa-gift fa-5x'></i>&nbsp;&nbsp;&nbsp;<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
-    				<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>{{ $surprise->gifty->username }}</a>
+				@if($exchange->rawGiveAt() <= time() || Auth::User()->id === $surprise->giver->id)
+    					<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>{{ $surprise->gifty->username }}</a>
+				@else
+					???
+				@endif
     			</td>
     		</tr>
 	    	@endforeach
