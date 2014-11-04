@@ -9,7 +9,7 @@ class Exchange extends Eloquent implements SluggableInterface
 
 	use SoftDeletingTrait;
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'draw_at', 'give_at'];
 
     protected $sluggable = array(
         'build_from' => 'name',
@@ -17,14 +17,6 @@ class Exchange extends Eloquent implements SluggableInterface
     );
 
 	protected $table = 'exchanges';
-	
-	public function getDrawAtAttribute($attr) {        
-    	return date('F jS, Y', $attr);
-    }
-
-    public function getGiveAtAttribute($attr) {        
-    	return date('F jS, Y', $attr);
-    }
 
 	public function creator()
 	{
@@ -34,14 +26,6 @@ class Exchange extends Eloquent implements SluggableInterface
 	public function participants()
 	{
 		return $this->belongsToMany('User');
-	}
-
-	public function rawDrawAt() {
-		return $this->attributes['draw_at'];
-	}
-
-	public function rawGiveAt() {
-		return $this->attributes['give_at'];
 	}
 
 	public function surprises()

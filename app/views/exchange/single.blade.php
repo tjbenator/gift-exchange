@@ -49,15 +49,17 @@
 		</div>
 
 		<div class="col-md-4">
-			@if($exchange->processed && time() < $exchange->rawGiveAt() )
+			@if($exchange->processed && $exchange->give_at->isFuture())
 				<div class="panel panel-primary exchange-stage">
 			@else
 				<div class="panel panel-default exchange-stage">
 			@endif
 				<div class="panel-heading"><strong>Drawing</strong></div>
 				<div class="panel-body">
-					<i class='fa fa-calendar'></i> {{ $exchange->draw_at }}<br />
-					@if($exchange->processed && time() < $exchange->rawGiveAt() )
+					<abbr title='{{ $exchange->draw_at->toDateString() }}' class='initialism'>
+					<i class='fa fa-calendar'></i> {{ $exchange->draw_at->diffForHumans() }}
+					</abbr><br />
+					@if($exchange->processed && $exchange->give_at->isFuture() )
 						<i class='fa fa-key'></i> No changes can be made<br />
 						<i class='fa fa-envelope'></i> Check your email
 					@endif
@@ -78,15 +80,17 @@
 		</div>
 
 		<div class="col-md-3">
-			@if(time() >= $exchange->rawGiveAt() && $exchange->processed)
+			@if($exchange->processed && $exchange->give_at->isPast())
 				<div class="panel panel-primary exchange-stage">
 			@else
 				<div class="panel panel-default exchange-stage">
 			@endif
 				<div class="panel-heading"><strong>Results</strong></div>
 				<div class="panel-body">
-					<i class='fa fa-calendar'></i> {{ $exchange->give_at }}<br />
-					@if(time() >= $exchange->rawGiveAt() && $exchange->processed)
+					<abbr title='{{ $exchange->give_at->toDateString() }}' class='initialism'>
+						<i class='fa fa-calendar'></i> {{ $exchange->give_at->diffForHumans() }}
+					</abbr><br />
+					@if($exchange->processed && $exchange->give_at->isPast())
 						<i class='fa fa-bullhorn'></i> Results are below
 					@endif
 				</div>
@@ -121,7 +125,7 @@
 	<tbody>
 		@if($exchange->processed)
 			@foreach($exchange->surprises()->orderByRaw('RAND()')->get() as $surprise)
-			@if (Auth::check() && ($surprise->giver == Auth::User() || ($surprise->gifty == Auth::User() && $exchange->rawGiveAt() <= time())))
+			@if (Auth::check() && ($surprise->giver == Auth::User() || ($surprise->gifty == Auth::User() && $exchange->give_at->isPast())))
 	    	<tr class="info">
 	    	@else
 	    	<tr>
@@ -133,7 +137,7 @@
 					<i class='fa fa-gift fa-5x'></i>&nbsp;&nbsp;&nbsp;<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
-				@if($exchange->rawGiveAt() <= time() || (Auth::check() && Auth::User()->id === $surprise->giver->id))
+				@if($exchange->give_at->isPast() || (Auth::check() && Auth::User()->id === $surprise->giver->id))
     					<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>{{ $surprise->gifty->username }}</a>
 				@else
 					???

@@ -26,7 +26,7 @@
 	<tbody>
 	   	@if(Auth::User()->exchanges()->count() < 1)
     	<tr>
-    		<td> <i class='fa fa-gift fa-3x'></i></td>
+    		<td><i class='fa fa-gift fa-3x'></i></td>
     		<td></td>
     		<td></td>
     	</tr>
@@ -37,10 +37,10 @@
 	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
 	    		</td>
 	    		<td>
-	        		{{ $exchange->draw_at }}
+	        		{{ $exchange->draw_at->diffForHumans() }}
 	    		</td>
 	    		<td>
-	    			{{ $exchange->give_at }}
+	    			{{ $exchange->give_at->diffForHumans() }}
 	    		</td>
 	    	    <td>
 	        		@include('templates.partials.controls.exchange')
@@ -82,10 +82,10 @@
 	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
 	    		</td>
 				<td>
-	        		{{ $exchange->draw_at }}
+	        		{{ $exchange->draw_at->diffForHumans() }}
 	    		</td>
 	    		<td>
-	    			{{ $exchange->give_at }}
+	    			{{ $exchange->give_at->diffForHumans() }}
 	    		</td>
 			    <td>
 					@include('templates.partials.controls.exchange')

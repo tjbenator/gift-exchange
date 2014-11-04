@@ -38,7 +38,7 @@ class ExchangeProcess extends Command {
 	public function fire()
 	{
 		foreach (Exchange::whereProcessed(false)->get() as $exchange) {
-			if ($exchange->rawDrawAt() <= time()) {
+			if ($exchange->draw_at->isToday()) {
 				$this->info('Drawing for exchange "' . $exchange->name . '"');
 				// For each user in exchange
 				$users = $exchange->participants()->orderByRaw('RAND()')->get();
@@ -69,7 +69,7 @@ class ExchangeProcess extends Command {
 				$exchange->save();
 			} else {
 				// Skip
-				$this->info(ceil(($exchange->rawDrawAt() - time()) / 60 / 60 / 24) . ' days left on ' . $exchange->name);
+				$this->info( $exchange->draw_at->diffInDays() . ' days left on ' . $exchange->name);
 			}
 		}
 		$this->info('Done.');

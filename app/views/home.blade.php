@@ -21,7 +21,7 @@
 <table class='table table-hover'>
   <thead>
     <tr>
-      <th class=''>
+      <th>
         All Exchanges <span class="badge">{{Exchange::count()}}</span>
       </th>
       <th>
@@ -35,22 +35,31 @@
     </tr>
   </thead>
   <tbody>
-    @foreach(Exchange::all() as $exchange)
-      <tr>
-        <td>
-          <a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a>
-        </td>
-        <td>
-            {{ $exchange->draw_at }}
-        </td>
-        <td>
-            {{ $exchange->give_at }}
-        </td>
+    @if(Exchange::count() > 0)
+      @foreach(Exchange::all() as $exchange)
+        <tr>
           <td>
-            @include('templates.partials.controls.exchange')
-        </td>
-      </tr>
-      @endforeach
+            <a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a>
+          </td>
+          <td>
+              {{ $exchange->draw_at->diffForHumans() }}
+          </td>
+          <td>
+              {{ $exchange->give_at->diffForHumans() }}
+          </td>
+            <td>
+              @include('templates.partials.controls.exchange')
+          </td>
+        </tr>
+        @endforeach
+    @else
+        <tr>
+          <td><i class='fa fa-gift fa-3x'></i></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+    @endif
     </tbody>
 </table>
 

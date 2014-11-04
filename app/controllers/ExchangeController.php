@@ -18,8 +18,8 @@ class ExchangeController extends PageController
 		$rules = array (
 			'name' => 'required|max:32',
 			'description' => 'max:1024',
-			'draw_at' => 'required|date',
-			'give_at' => 'required|date',
+			'draw_at' => 'required|date_format:Y-m-d',
+			'give_at' => 'required|date_format:Y-m-d',
 			'passphrase' => 'required|min:3|max:32',
 			'spending_limit' => 'required|integer|min:1|max:999',
 		);
@@ -32,13 +32,18 @@ class ExchangeController extends PageController
 			$exchange = new Exchange;
 			$exchange->name = Input::get('name');
 			if (Input::has('description')) $exchange->description = Input::get('description');
-			$exchange->draw_at = strtotime(Input::get('draw_at'));
-			$exchange->give_at = strtotime(Input::get('give_at'));
+			$exchange->draw_at = Input::get('draw_at');
+			$exchange->give_at = Input::get('give_at');
 			$exchange->spending_limit = Input::get('spending_limit');
 			$exchange->passphrase = Input::get('passphrase', null);
 			if (Input::has('hidden')) $exchange->hidden = true;
 
 			Auth::User()->made()->save($exchange);
+
+			// Add the creator to the exchange
+			$exchange->participants()->attach(Auth::User());
+			$exchange->save();
+
 			return Redirect::to('/');
 		}
 	}
@@ -75,6 +80,10 @@ class ExchangeController extends PageController
 		if ($exchange->processed) {
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
 		}
+
+		if ($exchange->creator == Auth::User()->id) {
+			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t leave an exchange you created']);
+		}
 		$this->layout->title = 'Leave "' . $exchange->name . '"';
 		$this->layout->nest('content', 'exchange.leave', ['exchange' => $exchange]);
 	}
@@ -82,6 +91,10 @@ class ExchangeController extends PageController
 	public function postLeave(Exchange $exchange) {
 		if ($exchange->processed) {
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
+		}
+		
+		if ($exchange->creator == Auth::User()->id) {
+			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t leave an exchange you created']);
 		}
 		$rules = array (
 			'' => '',
