@@ -17,16 +17,13 @@
 						@endif
 					</abbr><br />
 
-					<abbr title='Creator' class='initialism'>
-						<a href="{{ URL::route('user', [$exchange->creator()->pluck('username')]) }}">
-							<i class='fa fa-user'></i>  {{ $exchange->creator()->pluck('username') }}
-						</a>
-					</abbr><br />
+					<a href="{{ URL::route('user', [$exchange->creator()->pluck('username')]) }}">
+						<i class='fa fa-user'></i>  {{ $exchange->creator()->pluck('username') }}
+					</a>
+					<br />
 
 					@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
-						<abbr title='Passphrase' class='initialism'>
-							<i class="fa fa-lock"></i> {{ $exchange->passphrase }}
-						</abbr>
+						<strong title='Passphrase'><i class="fa fa-lock"></i> {{ $exchange->passphrase }}</strong>
 						<br />
 					@endif
 					@if(!$exchange->processed)
@@ -100,7 +97,7 @@
 
 <div class='well' style="margin-top: 15px;">
 	@if ($exchange->description)
-		{{$exchange->description}}
+		{{ nl2br($exchange->description) }}
 	@else
 		<em>No Description Available</em>
 	@endif

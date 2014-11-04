@@ -10,7 +10,7 @@ class ExchangeController extends PageController
 	public function getCreate()
 	{
 		$this->layout->title = 'Create an Exchange';
-		$this->layout->content = View::make('exchange.create');
+		$this->layout->content = View::make('exchange.editor');
 	}
 
 	public function postCreate() 
@@ -45,6 +45,40 @@ class ExchangeController extends PageController
 			$exchange->save();
 
 			return Redirect::to('/');
+		}
+	}
+
+	public function getEdit(Exchange $exchange)
+	{
+		$this->layout->title = 'Edit Exchange';
+		$this->layout->nest('content', 'exchange.editor', ['exchange' => $exchange]);
+	}
+
+	public function postEdit(Exchange $exchange) 
+	{
+		$rules = array (
+			'name' => 'required|max:32',
+			'description' => 'max:1024',
+			'draw_at' => '',
+			'give_at' => '',
+			'passphrase' => 'required|min:3|max:32',
+			'spending_limit' => 'required|integer|min:1|max:999',
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::route('exchange.edit', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
+		} else {
+			$exchange->name = Input::get('name');
+			if (Input::has('description')) $exchange->description = Input::get('description');
+			$exchange->spending_limit = Input::get('spending_limit');
+			$exchange->passphrase = Input::get('passphrase', null);
+			if (Input::has('hidden')) $exchange->hidden = true;
+
+			$exchange->save();
+
+			return Redirect::route('exchange', ['exchange' => $exchange->slug]);
 		}
 	}
 

@@ -66,6 +66,9 @@ Route::group(array('prefix' => 'exchange/{exchange}'), function ()
 	Route::get('leave', array('as' => 'exchange.leave', 'uses' => 'ExchangeController@getLeave', 'before' => 'auth|exchange.processed'));
 	Route::post('leave', array('as' => 'exchange.leave', 'uses' => 'ExchangeController@postLeave', 'before' => 'auth|exchange.processed'));
 
+	Route::get('edit', array('as' => 'exchange.edit', 'uses' => 'ExchangeController@getEdit', 'before' => 'auth|exchange.processed'));
+	Route::post('edit', array('as' => 'exchange.edit', 'uses' => 'ExchangeController@postEdit', 'before' => 'auth|exchange.processed'));
+
 	Route::get('delete', array('as' => 'exchange.delete', 'uses' => 'ExchangeController@getDelete', 'before' => 'auth|owner|exchange.processed'));
 	Route::post('delete', array('as' => 'exchange.delete', 'uses' => 'ExchangeController@postDelete', 'before' => 'auth|owner|csrf|exchange.processed'));
 });
