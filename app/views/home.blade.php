@@ -1,7 +1,7 @@
 <div class="jumbotron">
-  <div class="container">
+  <div class="container" style='text-align: center;'>
     <h1>Welcome to the {{ Config::get('settings.site_title') }}</h1>
-    <p style='text-align: center;'>
+    <p>
         <i class='fa fa-gift fa-5x'></i>
 	&nbsp;&nbsp;&nbsp;
         <i class='fa fa-refresh fa-5x fa-spin'></i>
