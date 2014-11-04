@@ -97,7 +97,7 @@
 
 <div class='well' style="margin-top: 15px;">
 	@if ($exchange->description)
-		{{ nl2br($exchange->description) }}
+		{{ nl2br(autolink($exchange->description, 50, ' rel="nofollow"')) }}
 	@else
 		<em>No Description Available</em>
 	@endif

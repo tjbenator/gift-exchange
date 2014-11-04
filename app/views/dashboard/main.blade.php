@@ -2,7 +2,7 @@
 <a href='{{URL::action('dashboard.edit.wishlist')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Wishlist</a>
 @if (Auth::User()->wishlist())
 <div class='well'>
-{{ nl2br(Auth::User()->wishlist()->pluck('wishlist')) }}
+{{ nl2br(autolink(Auth::User()->wishlist()->pluck('wishlist'), 50, ' rel="nofollow"')) }}
 </div>
 @endif
 

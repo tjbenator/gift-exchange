@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"cviebrock/eloquent-sluggable": "2.*",
-		"torann/currency": "dev-master"
+		"torann/currency": "dev-master",
+		"iamcal/lib_autolink": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

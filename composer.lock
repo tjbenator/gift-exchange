@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2901ccc3076473db17fa8eee5851da58",
+    "hash": "95cb162d6a438aee99ab8f2d83256cf0",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -194,6 +194,38 @@
                 "zf2"
             ],
             "time": "2014-10-26 09:05:09"
+        },
+        {
+            "name": "iamcal/lib_autolink",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamcal/lib_autolink.git",
+                "reference": "b401a631faff0bbb68256343c10f785b74fabde5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamcal/lib_autolink/zipball/b401a631faff0bbb68256343c10f785b74fabde5",
+                "reference": "b401a631faff0bbb68256343c10f785b74fabde5",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib_autolink.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Adds anchors to urls in a text",
+            "keywords": [
+                "anchor",
+                "autolink",
+                "link"
+            ],
+            "time": "2013-11-28 18:17:21"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -1741,7 +1773,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "torann/currency": 20
+        "torann/currency": 20,
+        "iamcal/lib_autolink": 20
     },
     "prefer-stable": false,
     "platform": [
