@@ -5,7 +5,7 @@ class AuthController extends PageController
 	{
 		$rules = array (
 				'username' => 'required',
-				'password' => 'required|min:2'
+				'password' => 'required|min:8'
 			);
 
 		$validator = Validator::make(Input::all(), $rules);
