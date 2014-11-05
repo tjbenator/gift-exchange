@@ -2,17 +2,17 @@
   <div class="container" style='text-align: center;'>
     <h1>Welcome to the {{ Config::get('settings.site_title') }}</h1>
     <p>
-        <i class='fa fa-gift fa-5x'></i>
+        <i title="You" class='fa fa-gift fa-5x'></i>
 	&nbsp;&nbsp;&nbsp;
-        <i class='fa fa-refresh fa-5x fa-spin'></i>
+        <i title="I'm dizzy &gt;,&lt;" class='fa fa-refresh fa-5x fa-spin'></i>
 	&nbsp;&nbsp;&nbsp;
-        <i class='fa fa-gift fa-5x'></i>
+        <i title="Your penguin friend" class='fa fa-gift fa-5x'></i>
 	<br />
 	<br />
 	@if(!Auth::check())
-		<a href='{{URL::route('login')}}' class="btn btn-success btn-lg">Sign in</a> <a href='{{URL::route('register')}}' class="btn btn-primary btn-lg" role="button">Sign Up &raquo;</a>
+		<a title="It's the right thing to do" href='{{URL::route('login')}}' class="btn btn-success btn-lg">Sign in</a> <a href='{{URL::route('register')}}' class="btn btn-primary btn-lg" role="button">Sign Up &raquo;</a>
   @else
-    <a href='{{URL::route('exchange.create')}}' class="btn btn-success btn-lg">Create Exchange</a>
+    <a title="Let's get this party started!" href='{{URL::route('exchange.create')}}' class="btn btn-success btn-lg">Create Exchange</a>
 	@endif
     </p>
 </div>
