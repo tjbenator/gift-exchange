@@ -28,3 +28,7 @@ td {
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
 }
+
+.how-to {
+	height: 350px;
+}

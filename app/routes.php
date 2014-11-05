@@ -37,7 +37,7 @@ Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 
 //Auth Pages
 
-	Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@getLogout', 'before' => 'auth'));
+Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@getLogout', 'before' => 'auth'));
 Route::group(array('prefix' => 'dashboard', 'before' => 'auth'), function ()
 {
 	Route::get('/', array('as' => 'dashboard', 'uses' => 'UserDashboardController@getIndex'));
@@ -89,3 +89,7 @@ Route::group(array('before' => 'guest'), function ()
 
 	Route::controller('password', 'RemindersController');
 });
+
+//Pages
+Route::get('/about', array('as' => 'about', 'uses' => 'HomeController@getAbout'));
+Route::get('/how-to-wishlist', array('as' => 'how-to-wishlist', 'uses' => 'HomeController@getHowToWishlist'));
