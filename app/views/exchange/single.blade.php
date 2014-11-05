@@ -17,12 +17,12 @@
 						@endif
 					</abbr><br />
 
-					<a href="{{ URL::route('user', [$exchange->creator()->pluck('username')]) }}">
-						<i class='fa fa-user'></i>  {{ $exchange->creator()->pluck('username') }}
+					<a href="{{ URL::route('user', [$exchange->initiator->username]) }}">
+						<i class='fa fa-user'></i>  {{ $exchange->initiator->username }}
 					</a>
 					<br />
 
-					@if(Auth::check() && $exchange->creator()->pluck('id') == Auth::User()->id)
+					@if(Auth::check() && $exchange->initiator->id == Auth::User()->id)
 						<strong title='Passphrase'><i class="fa fa-lock"></i> {{ $exchange->passphrase }}</strong>
 						<br />
 					@endif
