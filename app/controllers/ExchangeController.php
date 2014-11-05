@@ -101,8 +101,14 @@ class ExchangeController extends PageController
 				return Redirect::route('dashboard.edit.wishlist')->withErrors(['e' => 'You must add items to your wishlist before joining an exchange!']);				
 			}
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
-			if ($user == 0) {
+			if ($user == 0)
+			{
 				$exchange->participants()->attach(Auth::User());
+				//Email
+				Mail::send('emails.exchanges.join', array('exchange' => $exchange, 'user' => Auth::User()), function($message) use ($exchange)
+				{
+					$message->to($exchange->creator->email, $exchange->creator->username)->subject(Auth::User()->username . ' joined ' . $exchange->name . '!');
+				});
 			} else {
 				return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You are already in this exchange']);
 			}
