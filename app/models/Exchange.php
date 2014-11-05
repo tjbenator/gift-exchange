@@ -18,7 +18,7 @@ class Exchange extends Eloquent implements SluggableInterface
 
 	protected $table = 'exchanges';
 
-	public function creator()
+	public function initiator()
 	{
 		return $this->belongsTo('User', 'creator', 'id');
 	}

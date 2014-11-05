@@ -40,7 +40,7 @@ class ExchangeController extends PageController
 
 			Auth::User()->made()->save($exchange);
 
-			// Add the creator to the exchange
+			// Add the initiator to the exchange
 			$exchange->participants()->attach(Auth::User());
 			$exchange->save();
 
@@ -103,11 +103,12 @@ class ExchangeController extends PageController
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
 			if ($user == 0)
 			{
-				$exchange->participants()->attach(Auth::User());
+				$user = Auth::User();
+				//$exchange->participants()->attach($user);
 				//Email
-				Mail::send('emails.exchanges.join', array('exchange' => $exchange, 'user' => Auth::User()), function($message) use ($exchange)
+				Mail::send('emails.exchanges.join', array('exchange' => $exchange, 'user' => $user), function($message) use ($exchange, $user)
 				{
-					$message->to($exchange->creator->email, $exchange->creator->username)->subject(Auth::User()->username . ' joined ' . $exchange->name . '!');
+					$message->to($exchange->initiator->email, $exchange->initiator->username)->subject($user->username . ' joined ' . $exchange->name . '!');
 				});
 			} else {
 				return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You are already in this exchange']);
@@ -121,7 +122,7 @@ class ExchangeController extends PageController
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
 		}
 
-		if ($exchange->creator == Auth::User()->id) {
+		if ($exchange->initiator->id == Auth::User()->id) {
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t leave an exchange you created']);
 		}
 		$this->layout->title = 'Leave "' . $exchange->name . '"';
@@ -133,7 +134,7 @@ class ExchangeController extends PageController
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
 		}
 		
-		if ($exchange->creator == Auth::User()->id) {
+		if ($exchange->initiator->id == Auth::User()->id) {
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t leave an exchange you created']);
 		}
 		$rules = array (
