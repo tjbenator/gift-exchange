@@ -79,6 +79,8 @@ Route::group(array('prefix' => 'user/{user}'), function ()
 	Route::get('/', array('as' => 'user', 'uses' => 'UserController@getIndex', 'before' => 'auth'));
 });
 
+Route::get('users', array('as' => 'users', 'uses' => 'UserController@getUserList', 'before' => 'auth'));
+
 //Guest Pages
 Route::group(array('before' => 'guest'), function () 
 {

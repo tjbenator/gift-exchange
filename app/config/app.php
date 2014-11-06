@@ -124,6 +124,7 @@ return array(
 
 		'Cviebrock\EloquentSluggable\SluggableServiceProvider',
 		'Torann\Currency\CurrencyServiceProvider',
+		'Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider'
 	),
 
 	/*
@@ -192,6 +193,7 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 
 		'Currency' => 'Torann\Currency\Facades\Currency',
+		'Gravatar' => 'Thomaswelton\LaravelGravatar\Facades\Gravatar',
 	),
 
 );

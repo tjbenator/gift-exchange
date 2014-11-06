@@ -44,6 +44,7 @@
         		<a href='{{ URL::route('exchange.create') }}' class='btn btn-success'>Create Exchange</a>
             <a href='{{ URL::route('dashboard') }}' class='btn btn-primary'>Dashboard</a>
         		<a href='{{ URL::route('logout') }}' class='btn btn-danger'>Logout</a>
+            {{ Gravatar::image(Auth::User()->email, Auth::User()->username, ['width' => 30, 'height' => 30]); }}
         	</div>
 		    @else
         {{ Form::open(array('route' => 'login', 'class' => 'navbar-form navbar-right', 'role' => 'form')) }}

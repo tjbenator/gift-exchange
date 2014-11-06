@@ -128,14 +128,20 @@
 	    	<tr>
 	    	@endif
 	    		<td>
-    				<a href='{{ URL::route('user', [$surprise->giver->username]) }}'>{{ $surprise->giver->username }}</a>
+	    			<a href='{{ URL::route('user', [$surprise->giver->username]) }}'>
+	    				{{ Gravatar::image($surprise->giver->email, $surprise->giver->username, ['width' => 30, 'height' => 30]); }}
+    					{{ $surprise->giver->username }}
+    				</a>
     			</td>
     			<td>
 					<i class='fa fa-gift fa-5x'></i>&nbsp;&nbsp;&nbsp;<i class='fa fa-long-arrow-right fa-5x'></i>
     			</td>
     			<td>
 				@if($exchange->give_at->isPast() || (Auth::check() && Auth::User()->id === $surprise->giver->id))
-    					<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>{{ $surprise->gifty->username }}</a>
+						<a href='{{ URL::route('user', [$surprise->gifty->username]) }}'>
+							{{ Gravatar::image($surprise->gifty->email, $surprise->gifty->username, ['width' => 30, 'height' => 30]); }}
+    						{{ $surprise->gifty->username }}
+    					</a>
 				@else
 					???
 				@endif
@@ -146,7 +152,10 @@
 			@foreach($exchange->participants()->get() as $participant)
 	    	<tr>
 	    		<td>
-    				<a href='{{ URL::route('user', [$participant->username]) }}'>{{$participant->username}}</a>
+	    			<a href='{{ URL::route('user', [$participant->username]) }}'>
+	    				{{ Gravatar::image($participant->email, $participant->username, ['width' => 30, 'height' => 30]); }}
+    					{{$participant->username}}
+    				</a>
     			</td>
     			<td>
 					<i class='fa fa-gift fa-5x'></i>&nbsp;&nbsp;&nbsp;<i class='fa fa-long-arrow-right fa-5x'></i>

@@ -38,7 +38,7 @@ class ExchangeProcess extends Command {
 	public function fire()
 	{
 		foreach (Exchange::whereProcessed(false)->get() as $exchange) {
-			if ($exchange->draw_at->isToday()) {
+			if ($exchange->draw_at->isPast()) {
 				$this->info('Drawing for exchange "' . $exchange->name . '"');
 				// For each user in exchange
 				$users = $exchange->participants()->orderByRaw('RAND()')->get();

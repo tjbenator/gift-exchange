@@ -13,6 +13,7 @@
 		<a title="It's the right thing to do" href='{{URL::route('login')}}' class="btn btn-success btn-lg">Sign in</a> <a href='{{URL::route('register')}}' class="btn btn-primary btn-lg" role="button">Sign Up &raquo;</a>
   @else
     <a title="Let's get this party started!" href='{{URL::route('exchange.create')}}' class="btn btn-success btn-lg">Create Exchange</a>
+    <a title="We are your friends!" href='{{URL::route('users')}}' class="btn btn-primary btn-lg">User List</a>
 	@endif
     </p>
 </div>
