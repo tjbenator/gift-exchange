@@ -1,34 +1,44 @@
 <?php
-class UserDashboardController extends PageController
-{
-	public function getIndex() {
+//use Illuminate\Contracts\Auth\User;
+class UserDashboardController extends PageController {
+
+	public function getIndex()
+	{
 		$this->layout->title = 'Dashboard';
-		$this->layout->nest('content', 'dashboard.main', []);
+		$this->layout->nest('content', 'dashboard.main', ['user' => $this->user]);
 	}
 
-	public function getEditWishlist() {
+	public function getEditWishlist()
+	{
 		$this->layout->title = 'Edit Wishlist';
-		$this->layout->nest('content', 'dashboard.edit.wishlist', ['wishlist' => Auth::User()->wishlist()->first()]);
+		$this->layout->nest('content', 'dashboard.edit.wishlist', ['user' => $this->user, 'wishlist' => $this->user->wishlist()->first()]);
 	}
 
-	public function postEditWishlist() {
-		$rules = array (
+	public function postEditWishlist()
+	{
+		$rules = array(
 			'wishlist' => 'min:8|max:2048',
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
-			return Redirect::route('dashboard.edit.wishlist', ['wishlist' => Auth::User()->wishlist()->get()])->withErrors($validator)->withInput(Input::all());
-		} else {
-			$wishlist = Wishlist::whereUserId(Auth::User()->id)->first();
-			if ($wishlist) {
+		if ($validator->fails())
+		{
+			return Redirect::route('dashboard.edit.wishlist', ['wishlist' => $this->user->wishlist()->get()])->withErrors($validator)->withInput(Input::all());
+		}
+		else
+		{
+			$wishlist = Wishlist::whereUserId($this->user->id)->first();
+			if ($wishlist)
+			{
 				$wishlist->wishlist = Input::get('wishlist');
 				$wishlist->save();
-			} else {
+			}
+			else
+			{
 				$wishlist = new Wishlist;
 				$wishlist->wishlist = Input::get('wishlist');
-				Auth::User()->wishlist()->save($wishlist);
+				$this->user->wishlist()->save($wishlist);
 			}
 			return Redirect::route('dashboard');
 		}
@@ -37,7 +47,8 @@ class UserDashboardController extends PageController
 	public function getEditAccount()
 	{
 		$this->layout->title = 'Dashboard - Account';
-		$this->layout->content = View::make('dashboard.account');
+		$this->layout->nest('content', 'dashboard.account', ['user' => $this->user]);
+
 	}
 
 
@@ -52,7 +63,7 @@ class UserDashboardController extends PageController
 			'currency' => 'required|exists:currency,code',
 			'password' => 'required'
 			);
-		if ( Auth::validate(array('username' => Auth::User()->username, 'password' => Input::get('password'))) )
+		if ( Auth::validate(array('username' => $this->user->username, 'password' => Input::get('password'))) )
 		{
 			$messages = array(
 				'newpassword.min' => 'Your new password must be at least :min characters',
@@ -62,23 +73,22 @@ class UserDashboardController extends PageController
 
 			if ($validator->passes()) 
 			{
-				$user = Auth::User();				
 				if (Input::has('email')) 
 				{
-					$user->email = Input::get('email');
+					$this->user->email = Input::get('email');
 				}
 				if (Input::has('newpassword'))
 				{
-					$user->password = Hash::make(Input::get('newpassword'));
+					$this->user->password = Hash::make(Input::get('newpassword'));
 				}
 
-				$user->currency = Input::get('currency');
+				$this->user->currency = Input::get('currency');
 
-				$user->save();
+				$this->user->save();
 				return Redirect::route('dashboard');	
 			}
 		} else {
-			return Redirect::route('dashboard.account')->withErrors(array('invalidpassword' => 'Invalid old password'));		
+			return Redirect::route('dashboard.account')->withErrors(array('invalidpassword' => 'Invalid old password'));
 		}
 		return Redirect::route('dashboard.account')->withErrors($validator);
 	}

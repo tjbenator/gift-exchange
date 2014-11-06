@@ -1,8 +1,8 @@
 <a href='{{URL::action('dashboard.account')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Account</a>
 <a href='{{URL::action('dashboard.edit.wishlist')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Wishlist</a>
-@if (Auth::User()->wishlist())
+@if ($user->wishlist())
 <div class='well'>
-{{ nl2br(autolink(Auth::User()->wishlist()->pluck('wishlist'), 50, ' rel="nofollow"')) }}
+{{ nl2br(autolink($user->wishlist()->pluck('wishlist'), 50, ' rel="nofollow"')) }}
 </div>
 @endif
 
@@ -11,7 +11,7 @@
 	<thead>
 		<tr>
 			<th class=''>
-				Exchanges you are participating in <span class="badge">{{Auth::User()->exchanges->count()}}</span>
+				Exchanges you are participating in <span class="badge">{{$user->exchanges->count()}}</span>
 			</th>
 			<th>
 				Draw Date
@@ -24,14 +24,14 @@
 		</tr>
 	</thead>
 	<tbody>
-	   	@if(Auth::User()->exchanges()->count() < 1)
+	   	@if($user->exchanges()->count() < 1)
     	<tr>
     		<td><i class='fa fa-gift fa-3x'></i></td>
     		<td></td>
     		<td></td>
     	</tr>
     	@else
-			@foreach(Auth::User()->exchanges()->get() as $exchange)
+			@foreach($user->exchanges()->get() as $exchange)
 		    <tr>
 	    		<td>
 	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
@@ -57,7 +57,7 @@
 	<thead>
 		<tr>
 			<th>
-				Exchanges owned by you <span class="badge">{{Auth::User()->made()->count()}}</span>
+				Exchanges owned by you <span class="badge">{{$user->made()->count()}}</span>
 			</th>
 			<th>
 				Draw Date
@@ -68,7 +68,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	   	@if(Auth::User()->made()->count() < 1)
+	   	@if($user->made()->count() < 1)
     	<tr>
     		<td> <i class='fa fa-gift fa-3x'></i></td>
     		<td></td>
@@ -76,7 +76,7 @@
     		<td></td>
     	</tr>
     	@else
-			@foreach(Auth::User()->made()->get() as $exchange)
+			@foreach($user->made()->get() as $exchange)
 		    <tr>
 	    		<td>
 	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>

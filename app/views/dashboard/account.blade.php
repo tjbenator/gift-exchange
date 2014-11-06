@@ -1,8 +1,8 @@
 <div class='well'>
-{{ Form::model(Auth::user(), array('action' => 'UserDashboardController@postEditAccount')) }}
+{{ Form::model($user, array('action' => 'UserDashboardController@postEditAccount')) }}
     <div class="form-group">
         {{ Form::label('email', 'Email') }}
-        {{ Form::email('email', Auth::User()->email, array('placeholder' => 'email',  'class' => 'form-control')) }}
+        {{ Form::email('email', $user->email, array('placeholder' => 'email',  'class' => 'form-control')) }}
     </div>
     <div class="row">
             <div class="col-xs-3">
