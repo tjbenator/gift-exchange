@@ -42,16 +42,17 @@ Route::group(array('prefix' => 'dashboard', 'before' => 'auth'), function ()
 {
 	Route::get('/', array('as' => 'dashboard', 'uses' => 'UserDashboardController@getIndex'));
 
-	Route::get('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@getEditAccount'));
-	Route::post('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@postEditAccount'));
+	Route::get('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@getAccount'));
+	Route::post('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@postAccount'));
 
-	Route::get('edit/wishlist', array('as' => 'dashboard.edit.wishlist', 'uses' => 'UserDashboardController@getEditWishlist'));
-	Route::post('edit/wishlist', array('as' => 'dashboard.edit.wishlist', 'uses' => 'UserDashboardController@postEditWishlist'));
+	Route::get('edit/wishlist', array('as' => 'dashboard.wishlist', 'uses' => 'UserDashboardController@getWishlist'));
+	Route::post('edit/wishlist', array('as' => 'dashboard.wishlist', 'uses' => 'UserDashboardController@postWishlist'));
 });
 
 Route::group(array('prefix' => 'exchanges'), function ()
 {
 	Route::get('/', array('as' => 'exchanges', 'uses' => 'ExchangeController@getIndex'));
+	
 	Route::get('create', array('as' => 'exchange.create', 'uses' => 'ExchangeController@getCreate', 'before' => 'auth'));
 	Route::post('create', array('as' => 'exchange.create', 'uses' => 'ExchangeController@postCreate', 'before' => 'auth|csrf'));
 });
@@ -75,7 +76,7 @@ Route::group(array('prefix' => 'exchange/{exchange}'), function ()
 
 Route::group(array('prefix' => 'user/{user}'), function ()
 {
-	Route::get('/', array('as' => 'user', 'uses' => 'UserController@getIndex'));
+	Route::get('/', array('as' => 'user', 'uses' => 'UserController@getIndex', 'before' => 'auth'));
 });
 
 //Guest Pages

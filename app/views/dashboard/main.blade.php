@@ -1,5 +1,5 @@
 <a href='{{URL::action('dashboard.account')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Account</a>
-<a href='{{URL::action('dashboard.edit.wishlist')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Wishlist</a>
+<a href='{{URL::action('dashboard.wishlist')}}' class='btn btn-warning' style="margin-bottom: 10px;">Edit Wishlist</a>
 @if ($user->wishlist())
 <div class='well'>
 {{ nl2br(autolink($user->wishlist()->pluck('wishlist'), 50, ' rel="nofollow"')) }}

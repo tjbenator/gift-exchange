@@ -1,5 +1,5 @@
 <div class='well'>
-{{ Form::model($user, array('action' => 'UserDashboardController@postEditAccount')) }}
+{{ Form::model($user, array('action' => 'UserDashboardController@postAccount')) }}
     <div class="form-group">
         {{ Form::label('email', 'Email') }}
         {{ Form::email('email', $user->email, array('placeholder' => 'email',  'class' => 'form-control')) }}

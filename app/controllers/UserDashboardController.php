@@ -8,13 +8,13 @@ class UserDashboardController extends PageController {
 		$this->layout->nest('content', 'dashboard.main', ['user' => $this->user]);
 	}
 
-	public function getEditWishlist()
+	public function getWishlist()
 	{
 		$this->layout->title = 'Edit Wishlist';
-		$this->layout->nest('content', 'dashboard.edit.wishlist', ['user' => $this->user, 'wishlist' => $this->user->wishlist()->first()]);
+		$this->layout->nest('content', 'dashboard.wishlist', ['user' => $this->user, 'wishlist' => $this->user->wishlist()->first()]);
 	}
 
-	public function postEditWishlist()
+	public function postWishlist()
 	{
 		$rules = array(
 			'wishlist' => 'min:8|max:2048',
@@ -44,7 +44,7 @@ class UserDashboardController extends PageController {
 		}
 	}
 
-	public function getEditAccount()
+	public function getAccount()
 	{
 		$this->layout->title = 'Dashboard - Account';
 		$this->layout->nest('content', 'dashboard.account', ['user' => $this->user]);
@@ -52,7 +52,7 @@ class UserDashboardController extends PageController {
 	}
 
 
-	public function postEditAccount()
+	public function postAccount()
 	{
 		$data = Input::all();
 
