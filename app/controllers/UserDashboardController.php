@@ -29,6 +29,7 @@ class UserDashboardController extends PageController {
 		else
 		{
 			$wishlist = Wishlist::whereUserId($this->user->id)->first();
+
 			if ($wishlist)
 			{
 				$wishlist->wishlist = Input::get('wishlist');
@@ -40,6 +41,7 @@ class UserDashboardController extends PageController {
 				$wishlist->wishlist = Input::get('wishlist');
 				$this->user->wishlist()->save($wishlist);
 			}
+
 			return Redirect::route('dashboard');
 		}
 	}
@@ -62,13 +64,15 @@ class UserDashboardController extends PageController {
 			'newpassword' => 'confirmed|min:8',
 			'currency' => 'required|exists:currency,code',
 			'password' => 'required'
-			);
+		);
+
 		if ( Auth::validate(array('username' => $this->user->username, 'password' => Input::get('password'))) )
 		{
 			$messages = array(
 				'newpassword.min' => 'Your new password must be at least :min characters',
 				'newpassword.confirmed' => 'Your new passwords do not match'
-				);
+			);
+
 			$validator = Validator::make($data, $rules, $messages);
 
 			if ($validator->passes()) 
@@ -77,19 +81,23 @@ class UserDashboardController extends PageController {
 				{
 					$this->user->email = Input::get('email');
 				}
+
 				if (Input::has('newpassword'))
 				{
 					$this->user->password = Hash::make(Input::get('newpassword'));
 				}
 
 				$this->user->currency = Input::get('currency');
-
 				$this->user->save();
+
 				return Redirect::route('dashboard');	
 			}
-		} else {
+		}
+		else
+		{
 			return Redirect::route('dashboard.account')->withErrors(array('invalidpassword' => 'Invalid old password'));
 		}
+		
 		return Redirect::route('dashboard.account')->withErrors($validator);
 	}
 }

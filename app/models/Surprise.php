@@ -1,10 +1,5 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
-
 class Surprise extends Eloquent {
 
 	/**
@@ -15,20 +10,24 @@ class Surprise extends Eloquent {
 	protected $table = 'surprises';
 	public $timestamps = false;
 
-
-	public function giver() {
+	public function giver()
+	{
 		return $this->belongsTo('User');
 	}
 
-	public function gifty() {
+	public function gifty()
+	{
 		return $this->belongsTo('User');
 	}
 
-	public function exchange() {
+	public function exchange()
+	{
 		return $this->belongsTo('Exchange');
 	}
 
-	public function wishlist() {
+	public function wishlist()
+	{
 		return $this->hasOne('Wishlist');
 	}
+
 }

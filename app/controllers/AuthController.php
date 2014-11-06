@@ -1,25 +1,32 @@
 <?php
-class AuthController extends PageController
-{
+class AuthController extends PageController {
+
 	public function postLogin()
 	{
 		$rules = array (
-				'username' => 'required',
-				'password' => 'required|min:8'
-			);
+			'username' => 'required',
+			'password' => 'required|min:8'
+		);
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
+		if ($validator->fails()) 
+		{
 			return Redirect::to('login')->withErrors($validator)->withInput(Input::except('password'));
-		} else {
+		}
+		else
+		{
 			$userdata = array (
 				'username' => Input::get('username'),
 				'password' => Input::get('password')
-				);
-			if (Auth::attempt($userdata)) {
+			);
+
+			if (Auth::attempt($userdata))
+			{
 				return Redirect::intended(URL::previous());
-			} else {
+			}
+			else
+			{
 				return Redirect::to('login')->withErrors(array('failed' => 'Invalid Credentials'));
 			}
 		}
@@ -36,5 +43,5 @@ class AuthController extends PageController
 		Auth::logout();
 		return Redirect::to(URL::previous());
 	}
-
+	
 }

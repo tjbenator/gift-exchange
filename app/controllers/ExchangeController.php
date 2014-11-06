@@ -15,7 +15,7 @@ class ExchangeController extends PageController
 
 	public function postCreate() 
 	{
-		$rules = array (
+		$rules = array(
 			'name' => 'required|max:32',
 			'description' => 'max:1024',
 			'draw_at' => 'required|date_format:Y-m-d',
@@ -26,9 +26,12 @@ class ExchangeController extends PageController
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			return Redirect::route('exchange.create')->withErrors($validator)->withInput(Input::all());
-		} else {
+		}
+		else
+		{
 			$exchange = new Exchange;
 			$exchange->name = Input::get('name');
 			if (Input::has('description')) $exchange->description = Input::get('description');
@@ -56,7 +59,7 @@ class ExchangeController extends PageController
 
 	public function postEdit(Exchange $exchange) 
 	{
-		$rules = array (
+		$rules = array(
 			'name' => 'required|max:32',
 			'description' => 'max:1024',
 			'draw_at' => '',
@@ -67,9 +70,12 @@ class ExchangeController extends PageController
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			return Redirect::route('exchange.edit', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
-		} else {
+		}
+		else
+		{
 			$exchange->name = Input::get('name');
 			if (Input::has('description')) $exchange->description = Input::get('description');
 			$exchange->spending_limit = Input::get('spending_limit');
@@ -82,104 +88,136 @@ class ExchangeController extends PageController
 		}
 	}
 
-	public function getJoin(Exchange $exchange) {
+	public function getJoin(Exchange $exchange)
+	{
 		$this->layout->title = 'Join "' . $exchange->name . '"';
 		$this->layout->nest('content', 'exchange.join', ['exchange' => $exchange]);
 	}
 
-	public function postJoin(Exchange $exchange) {
-		$rules = array (
+	public function postJoin(Exchange $exchange)
+	{
+		$rules = array(
 			'passphrase' => 'required|in:' . $exchange->passphrase,
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			return Redirect::route('exchange.join', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
-		} else {
-			if (Auth::User()->wishlist()->count() == 0) {
+		}
+		else
+		{
+			if (Auth::User()->wishlist()->count() == 0)
+			{
 				return Redirect::route('dashboard.edit.wishlist')->withErrors(['e' => 'You must add items to your wishlist before joining an exchange!']);				
 			}
+
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
+
 			if ($user == 0)
 			{
 				$user = Auth::User();
-				//$exchange->participants()->attach($user);
+				$exchange->participants()->attach($user);
 				//Email
 				Mail::send('emails.exchanges.join', array('exchange' => $exchange, 'user' => $user), function($message) use ($exchange, $user)
 				{
 					$message->to($exchange->initiator->email, $exchange->initiator->username)->subject($user->username . ' joined ' . $exchange->name . '!');
 				});
-			} else {
+			}
+			else
+			{
 				return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You are already in this exchange']);
 			}
+
 			return Redirect::route('exchange', ['exchange' => $exchange->slug]);
 		}
 	}
 
-	public function getLeave(Exchange $exchange) {
-		if ($exchange->processed) {
+	public function getLeave(Exchange $exchange)
+	{
+		if ($exchange->processed)
+		{
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
 		}
 
-		if ($exchange->initiator->id == Auth::User()->id) {
+		if ($exchange->initiator->id == Auth::User()->id)
+		{
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t leave an exchange you created']);
 		}
+
 		$this->layout->title = 'Leave "' . $exchange->name . '"';
 		$this->layout->nest('content', 'exchange.leave', ['exchange' => $exchange]);
 	}
 
-	public function postLeave(Exchange $exchange) {
-		if ($exchange->processed) {
+	public function postLeave(Exchange $exchange)
+	{
+		if ($exchange->processed)
+		{
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t delete a processed exchange']);
 		}
 		
-		if ($exchange->initiator->id == Auth::User()->id) {
+		if ($exchange->initiator->id == Auth::User()->id)
+		{
 			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You can\'t leave an exchange you created']);
 		}
-		$rules = array (
+
+		$rules = array(
 			'' => '',
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			return Redirect::route('exchange.leave')->withErrors($validator)->withInput(Input::all());
-		} else {
+		}
+		else
+		{
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
-			if ($user != 0) {
+
+			if ($user != 0)
+			{
 				$exchange->participants()->detach(Auth::User());
-			} else {
+			}
+			else
+			{
 				return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You aren\'t in this exchange']);
 			}
+
 			return Redirect::route('home');
 		}
 	}
 
-	public function getDelete(Exchange $exchange) {
+	public function getDelete(Exchange $exchange)
+	{
 		$this->layout->title = 'Delete Exchange';
 		$this->layout->nest('content', 'exchange.delete', ['exchange' => $exchange]);
 	}
 
-	public function postDelete(Exchange $exchange) {
+	public function postDelete(Exchange $exchange)
+	{
 		$rules = array (
-			'confirm' => 'required|in:' .  $exchange->name,
+			'confirm' => 'required|in:' . $exchange->name,
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			return Redirect::route('exchange.delete', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
-		} else {
+		}
+		else
+		{
 			$exchange->delete();
 			return Redirect::route('home');
 		}
 	}
-
 
 	public function getExchange(Exchange $exchange)
 	{
 		$this->layout->title = $exchange->name;
 		$this->layout->nest('content', 'exchange.single', ['exchange' => $exchange]);
 	}
+
 }

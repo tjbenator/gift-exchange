@@ -10,7 +10,7 @@ class RegistrationController extends PageController
 			'email' => 'required|email',
 			'password' => 'required|confirmed|min:8',
 			'currency' => 'required|exists:currency,code'
-			);
+		);
 
 		$validator = Validator::make($data, $rules);
 		
@@ -25,9 +25,8 @@ class RegistrationController extends PageController
 			Auth::login($user);
 			return Redirect::to('/');	
 		}
-		return Redirect::route('register')->withErrors($validator);	
-		
-		
+
+		return Redirect::route('register')->withErrors($validator);			
 	}
 
 	public function getRegister()
@@ -35,4 +34,5 @@ class RegistrationController extends PageController
 		$this->layout->title = 'Register';
 		$this->layout->content = View::make('register');
 	}
+
 }

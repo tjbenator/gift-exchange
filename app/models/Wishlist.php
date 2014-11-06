@@ -4,8 +4,9 @@ class Wishlist extends Eloquent
 
 	protected $table = 'wishlists';
 
-
-	public function user() {
+	public function user()
+	{
 		return $this->belongsTo('User');
 	}
+
 }
