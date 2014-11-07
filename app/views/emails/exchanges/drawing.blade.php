@@ -10,8 +10,7 @@
 
 			You will be giving a gift to {{ $gifty->username }} with a spending limit of @currency($exchange->spending_limit, $giver->currency).<br /><br />
 
-			<strong>Their current wishlist is:</strong><br />
-			{{ nl2br($gifty->wishlist()->pluck('wishlist')) }}
+			Click <a href='{{ URL::route('user', ['user' => $gifty->username]) }}'>here</a> to view their wishlist!
 		</div>
 	</body>
 </html>
