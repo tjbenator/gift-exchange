@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-md-3">
 			@if(!$exchange->processed)
-			<div class="panel panel-primary exchange-stage">
+			<div class="panel panel-warning exchange-stage">
 			@else
 			<div class="panel panel-default exchange-stage">
 			@endif
@@ -78,7 +78,7 @@
 
 		<div class="col-md-3">
 			@if($exchange->processed && $exchange->give_at->isPast())
-				<div class="panel panel-primary exchange-stage">
+				<div class="panel panel-success exchange-stage">
 			@else
 				<div class="panel panel-default exchange-stage">
 			@endif
@@ -93,6 +93,15 @@
 				</div>
 			</div>
 	</div>
+</div>
+
+<div class="progress">
+  <div class="progress-bar progress-bar-success" style="width: {{ $exchange->give_at_percentage }}%">
+    <span class="sr-only">{{ $exchange->give_at_percentage }}% Complete (Give at)</span>
+  </div>
+  <div class="progress-bar progress-bar-striped" style="width: {{ $exchange->draw_at_percentage }}%">
+    <span class="sr-only">{{ $exchange->draw_at_percentage}}% Complete (Draw At)</span>
+  </div>
 </div>
 
 <div class='well' style="margin-top: 15px;">
