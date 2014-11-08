@@ -8,13 +8,9 @@
 			@endif
   				<div class="panel-heading"><strong>Exchange Created</strong></div>
   				<div class="panel-body">
-					<abbr title='Spending Limit' class='initialism'>
+					<abbr title="Spending Limit/@currency($exchange->spending_limit, Config::get('currency::default')) . ' ' . Config::get('currency::default')" class='initialism'>
 						<i class="fa fa-money"></i>
-						@if(Auth::check())
-							@currency($exchange->spending_limit, Auth::User()->currency)
-						@else
-							@currency($exchange->spending_limit)<br />
-						@endif
+							@currency($exchange->spending_limit)
 					</abbr><br />
 
 					<a href="{{ URL::route('user', [$exchange->initiator->username]) }}">

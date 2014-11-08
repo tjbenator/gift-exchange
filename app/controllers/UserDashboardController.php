@@ -88,6 +88,7 @@ class UserDashboardController extends PageController {
 				}
 
 				$this->user->currency = Input::get('currency');
+				Currency::setCurrency($this->user->currency);
 				$this->user->save();
 
 				return Redirect::route('dashboard');	
