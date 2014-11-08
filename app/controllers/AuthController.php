@@ -23,6 +23,7 @@ class AuthController extends PageController {
 
 			if (Auth::attempt($userdata))
 			{
+				Currency::setCurrency(Auth::User()->currency);
 				return Redirect::intended(URL::previous());
 			}
 			else

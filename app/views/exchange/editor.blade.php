@@ -26,7 +26,7 @@
 				{{ Form::label('spending_limit', 'Spending Limit') }}
 				<div class="input-group">
 					<div class="input-group-addon">$</div>
-					{{ Form::number('spending_limit', null, array('class' => 'form-control', 'placeholder' => 'In USD')) }}
+					{{ Form::number('spending_limit', null, array('class' => 'form-control', 'placeholder' => 'In ' . Config::get('currency::default'))) }}
 					<div class="input-group-addon">
 						.00
 					</div>
