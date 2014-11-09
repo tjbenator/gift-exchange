@@ -39,7 +39,7 @@
       @foreach($exchanges as $exchange)
         <tr>
           <td>
-            @if($exchange->initiator->id == Auth::User()->id)
+            @if(Auth::check() && $exchange->initiator->id == Auth::User()->id)
               <span class="label label-primary" title="You are the initiator">Initiator</span>
             @endif
             @if($exchange->created_at->addDay()->isPast())
