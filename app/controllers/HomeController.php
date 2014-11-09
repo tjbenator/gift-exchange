@@ -5,7 +5,7 @@ class HomeController extends PageController {
 	public function getIndex()
 	{
 		$this->layout->title = 'Home';
-		$exchanges = Exchange::where('hidden', 0)->orderBy('processed', 'asc')->get();
+		$exchanges = Exchange::where('hidden', 0)->orderBy('draw_at', 'asc')->paginate(Config::get('settings.per_page'));
 		$this->layout->nest('content', 'home', ['exchanges' => $exchanges]);
 	}
 

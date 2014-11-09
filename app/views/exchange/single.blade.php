@@ -10,8 +10,9 @@
   				<div class="panel-body">
 					<abbr title="Spending Limit/@currency($exchange->spending_limit, Config::get('currency::default')) . ' ' . Config::get('currency::default')" class='initialism'>
 						<i class="fa fa-money"></i>
-							@currency($exchange->spending_limit)
-					</abbr><br />
+						@currency($exchange->spending_limit)
+					</abbr>
+					<br />
 
 					<a href="{{ URL::route('user', [$exchange->initiator->username]) }}">
 						<i class='fa fa-user'></i>  {{ $exchange->initiator->username }}
@@ -88,17 +89,21 @@
 					@endif
 				</div>
 			</div>
+		</div>
 	</div>
 </div>
 
+<div class="container">
 <div class="progress">
-  <div class="progress-bar progress-bar-success" style="width: {{ $exchange->give_at_percentage }}%">
-    <span class="sr-only">{{ $exchange->give_at_percentage }}% Complete (Give at)</span>
-  </div>
-  <div class="progress-bar progress-bar-striped" style="width: {{ $exchange->draw_at_percentage }}%">
-    <span class="sr-only">{{ $exchange->draw_at_percentage}}% Complete (Draw At)</span>
-  </div>
+	<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{ $exchange->give_at_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $exchange->give_at_percentage }}%">
+		<span class="sr-only">{{ $exchange->give_at_percentage }}% Complete (Give at)</span>
+	</div>
+	<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="{{ $exchange->draw_at_percentage }}" aria-valuemin="0" aria-valuemax="100"  style="width: {{ $exchange->draw_at_percentage }}%">
+		<span class="sr-only">{{ $exchange->draw_at_percentage}}% Complete (Draw At)</span>
+	</div>
 </div>
+</div>
+
 
 <div class='well' style="margin-top: 15px;">
 	@if ($exchange->description)
@@ -107,6 +112,7 @@
 		<em>No Description Available</em>
 	@endif
 </div>
+
 
 
 @include('templates.partials.controls.exchange')

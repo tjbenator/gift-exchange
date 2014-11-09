@@ -2,28 +2,27 @@
   <div class="container" style='text-align: center;'>
     <h1>Welcome to the {{ Config::get('settings.site_title') }}</h1>
     <p>
-        <i title="You" class='fa fa-gift fa-5x'></i>
-	&nbsp;&nbsp;&nbsp;
-        <i title="I'm dizzy &gt;,&lt;" class='fa fa-refresh fa-5x fa-spin'></i>
-	&nbsp;&nbsp;&nbsp;
-        <i title="Your penguin friend" class='fa fa-gift fa-5x'></i>
-	<br />
-	<br />
-	@if(!Auth::check())
-		<a title="It's the right thing to do" href='{{URL::route('login')}}' class="btn btn-success btn-lg">Sign in</a> <a href='{{URL::route('register')}}' class="btn btn-primary btn-lg" role="button">Sign Up &raquo;</a>
-  @else
-    <a title="Let's get this party started!" href='{{URL::route('exchange.create')}}' class="btn btn-success btn-lg">Create Exchange</a>
-    <a title="We are your friends!" href='{{URL::route('users')}}' class="btn btn-primary btn-lg">User List</a>
-	@endif
+      <i title="You" class='fa fa-gift fa-5x'></i>
+      &nbsp;&nbsp;&nbsp;
+      <i title="I'm dizzy &gt;,&lt;" class='fa fa-refresh fa-5x fa-spin'></i>
+      &nbsp;&nbsp;&nbsp;
+      <i title="Your penguin friend" class='fa fa-gift fa-5x'></i>
+    	<br />
+    	<br />
+      @if(!Auth::check())
+        <a title="It's the right thing to do" href='{{URL::route('login')}}' class="btn btn-success btn-lg">Sign in</a> <a href='{{URL::route('register')}}' class="btn btn-primary btn-lg" role="button">Sign Up &raquo;</a>
+      @else
+        <a title="Let's get this party started!" href='{{URL::route('exchange.create')}}' class="btn btn-success btn-lg">Create Exchange</a>
+        <a title="We are your friends!" href='{{URL::route('users')}}' class="btn btn-primary btn-lg">User List</a>
+      @endif
     </p>
+  </div>
 </div>
-</div>
-
 <table class='table table-hover'>
   <thead>
     <tr>
       <th>
-        All Exchanges <span class="badge">{{Exchange::count()}}</span>
+        Exchanges
       </th>
       <th>
         Draw Date
@@ -36,10 +35,22 @@
     </tr>
   </thead>
   <tbody>
-    @if(Exchange::count() > 0)
-      @foreach(Exchange::all() as $exchange)
+    @if($exchanges->count() > 0)
+      @foreach($exchanges as $exchange)
         <tr>
           <td>
+            @if($exchange->initiator->id == Auth::User()->id)
+              <span class="label label-primary" title="You are the initiator">Initiator</span>
+            @endif
+            @if($exchange->created_at->addDay()->isPast())
+              <span class="label label-default">New</span>
+            @endif
+            @if($exchange->draw_at->isPast() && $exchange->give_at->isFuture())
+              <span class="label label-warning">Drawn</span>
+            @endif
+            @if($exchange->give_at->isPast())
+              <span class="label label-danger">Over</span>
+            @endif
             <a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a>
           </td>
           <td>
@@ -52,7 +63,7 @@
               @include('templates.partials.controls.exchange')
           </td>
         </tr>
-        @endforeach
+      @endforeach
     @else
         <tr>
           <td><i class='fa fa-gift fa-3x'></i></td>
@@ -63,4 +74,4 @@
     @endif
     </tbody>
 </table>
-
+{{ $exchanges->links() }}<br />

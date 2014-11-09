@@ -27,51 +27,51 @@
 
 <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ URL::route('home') }}"><i class='fa fa-gift'></i> {{ Config::get('settings.site_title') }}</a>
-        </div>
-        <div class="navbar-collapse collapse">
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ URL::route('home') }}"><i class='fa fa-gift'></i> {{ Config::get('settings.site_title') }}</a>
+      </div>
+      <div class="navbar-collapse collapse">
         @if(Auth::check())
-        	<div class="navbar-form navbar-right">
-        		<a href='{{ URL::route('exchange.create') }}' class='btn btn-success'>Create Exchange</a>
+          <div class="navbar-form navbar-right">
+            <a href='{{ URL::route('exchange.create') }}' class='btn btn-success'>Create Exchange</a>
             <a href='{{ URL::route('dashboard') }}' class='btn btn-primary'>Dashboard</a>
-        		<a href='{{ URL::route('logout') }}' class='btn btn-danger'>Logout</a>
+            <a href='{{ URL::route('logout') }}' class='btn btn-danger'>Logout</a>
             {{ Gravatar::image(Auth::User()->email, Auth::User()->username, ['width' => 30, 'height' => 30]); }}
-        	</div>
-		    @else
-        {{ Form::open(array('route' => 'login', 'class' => 'navbar-form navbar-right', 'role' => 'form')) }}
-            <div class="form-group">
-              {{ Form::text('username', Input::old('username'), array('placeholder' => 'Username', 'autofocus', 'class' => 'form-control')) }}
-            </div>
-            <div class="form-group">
-              {{ Form::password('password', array('placeholder' => 'Password', 'class' => 'form-control')) }}
-            </div>
-            {{ Form::submit('Sign In', array('class' => "btn btn-success")) }}
-        {{ Form::close() }}
+          </div>
+        @else
+          {{ Form::open(array('route' => 'login', 'class' => 'navbar-form navbar-right', 'role' => 'form')) }}
+          <div class="form-group">
+            {{ Form::text('username', Input::old('username'), array('placeholder' => 'Username', 'autofocus', 'class' => 'form-control')) }}
+          </div>
+          <div class="form-group">
+            {{ Form::password('password', array('placeholder' => 'Password', 'class' => 'form-control')) }}
+          </div>
+          {{ Form::submit('Sign In', array('class' => "btn btn-success")) }}
+          {{ Form::close() }}
         @endif
-        </div><!--/.navbar-collapse -->
+      </div><!--/.navbar-collapse -->
+    </div>
+  </div>
+
+  @if (count($errors) > 0)
+    <div class="container">
+      <div class="alert alert-warning">
+        @foreach ($errors->all() as $error)
+        {{ $error }} <br />
+        @endforeach
       </div>
     </div>
-
-    @if (count($errors) > 0)
-      <div class="container">
-        <div class="alert alert-warning">
-          @foreach ($errors->all() as $error)
-          {{ $error }} <br />
-          @endforeach
-        </div>
-      </div>
-	   @endif
-    @if(isset($title))
-     <div class="container">
-       <h3>{{ $title }}</h3>
-     </div>
-    @endif
+  @endif
+  @if(isset($title))
+    <div class="container">
+      <h3>{{ $title }}</h3>
+    </div>
+  @endif
