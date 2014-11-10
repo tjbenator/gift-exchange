@@ -1,97 +1,100 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-3">
-			@if(!$exchange->processed)
-			<div class="panel panel-warning exchange-stage">
-			@else
+@include('templates.partials.exchanges.badges')
+<br />
+<br />
+
+<div class="row">
+	<div class="col-md-3">
+		@if(!$exchange->processed)
+		<div class="panel panel-warning exchange-stage">
+		@else
+		<div class="panel panel-default exchange-stage">
+		@endif
+				<div class="panel-heading"><strong>Exchange Created</strong></div>
+				<div class="panel-body">
+				<abbr title="Spending Limit/@currency($exchange->spending_limit, Config::get('currency::default')) . ' ' . Config::get('currency::default')" class='initialism'>
+					<i class="fa fa-money"></i>
+					@currency($exchange->spending_limit)
+				</abbr>
+				<br />
+
+				<a href="{{ URL::route('user', [$exchange->initiator->username]) }}">
+					<i class='fa fa-user'></i>  {{ $exchange->initiator->username }}
+				</a>
+				<br />
+
+				@if(Auth::check() && $exchange->initiator->id == Auth::User()->id)
+					<strong title='Passphrase'><i class="fa fa-lock"></i> {{ $exchange->passphrase }}</strong>
+					<br />
+				@endif
+				@if(!$exchange->processed)
+					<i class="fa fa-check-square"></i> Join now!
+				@endif
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-3 hidden-md hidden-lg">
+		<div class="exchange-stage">
+			<i class='fa fa-long-arrow-down fa-4x exchange-stage-arrow'></i>
+		</div>
+	</div>
+
+	<div class="col-md-1 hidden-sm">
+		<div class="exchange-stage">
+			<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		@if($exchange->processed && $exchange->give_at->isFuture())
+			<div class="panel panel-primary exchange-stage">
+		@else
 			<div class="panel panel-default exchange-stage">
-			@endif
-  				<div class="panel-heading"><strong>Exchange Created</strong></div>
-  				<div class="panel-body">
-					<abbr title="Spending Limit/@currency($exchange->spending_limit, Config::get('currency::default')) . ' ' . Config::get('currency::default')" class='initialism'>
-						<i class="fa fa-money"></i>
-						@currency($exchange->spending_limit)
-					</abbr>
-					<br />
-
-					<a href="{{ URL::route('user', [$exchange->initiator->username]) }}">
-						<i class='fa fa-user'></i>  {{ $exchange->initiator->username }}
-					</a>
-					<br />
-
-					@if(Auth::check() && $exchange->initiator->id == Auth::User()->id)
-						<strong title='Passphrase'><i class="fa fa-lock"></i> {{ $exchange->passphrase }}</strong>
-						<br />
-					@endif
-					@if(!$exchange->processed)
-						<i class="fa fa-check-square"></i> Join now!
-					@endif
-				</div>
+		@endif
+			<div class="panel-heading"><strong>Drawing</strong></div>
+			<div class="panel-body">
+				<abbr title='{{ $exchange->draw_at->toDateString() }}' class='initialism'>
+				<i class='fa fa-calendar'></i> {{ $exchange->draw_at->diffForHumans() }}
+				</abbr><br />
+				@if($exchange->processed && $exchange->give_at->isFuture() )
+					<i class='fa fa-key'></i> No changes can be made<br />
+					<i class='fa fa-envelope'></i> Check your email
+				@endif
 			</div>
 		</div>
+	</div>
 
-		<div class="col-md-3 hidden-md hidden-lg">
-			<div class="exchange-stage">
-				<i class='fa fa-long-arrow-down fa-4x exchange-stage-arrow'></i>
-			</div>
+	<div class="col-md-3  hidden-md hidden-lg">
+		<div class="exchange-stage">
+			<i class='fa fa-long-arrow-down fa-4x exchange-stage-arrow'></i>
 		</div>
+	</div>
+	
+	<div class="col-md-1  hidden-sm">
+		<div class="exchange-stage">
+			<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
+		</div>
+	</div>
 
-		<div class="col-md-1 hidden-sm">
-			<div class="exchange-stage">
-				<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
-			</div>
-		</div>
-
-		<div class="col-md-4">
-			@if($exchange->processed && $exchange->give_at->isFuture())
-				<div class="panel panel-primary exchange-stage">
-			@else
-				<div class="panel panel-default exchange-stage">
-			@endif
-				<div class="panel-heading"><strong>Drawing</strong></div>
-				<div class="panel-body">
-					<abbr title='{{ $exchange->draw_at->toDateString() }}' class='initialism'>
-					<i class='fa fa-calendar'></i> {{ $exchange->draw_at->diffForHumans() }}
-					</abbr><br />
-					@if($exchange->processed && $exchange->give_at->isFuture() )
-						<i class='fa fa-key'></i> No changes can be made<br />
-						<i class='fa fa-envelope'></i> Check your email
-					@endif
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-3  hidden-md hidden-lg">
-			<div class="exchange-stage">
-				<i class='fa fa-long-arrow-down fa-4x exchange-stage-arrow'></i>
-			</div>
-		</div>
-		
-		<div class="col-md-1  hidden-sm">
-			<div class="exchange-stage">
-				<i class='fa fa-long-arrow-right fa-4x exchange-stage-arrow'></i>
-			</div>
-		</div>
-
-		<div class="col-md-3">
-			@if($exchange->processed && $exchange->give_at->isPast())
-				<div class="panel panel-success exchange-stage">
-			@else
-				<div class="panel panel-default exchange-stage">
-			@endif
-				<div class="panel-heading"><strong>Results</strong></div>
-				<div class="panel-body">
-					<abbr title='{{ $exchange->give_at->toDateString() }}' class='initialism'>
-						<i class='fa fa-calendar'></i> {{ $exchange->give_at->diffForHumans() }}
-					</abbr><br />
-					@if($exchange->processed && $exchange->give_at->isPast())
-						<i class='fa fa-bullhorn'></i> Results are below
-					@endif
-				</div>
+	<div class="col-md-3">
+		@if($exchange->processed && $exchange->give_at->isPast())
+			<div class="panel panel-success exchange-stage">
+		@else
+			<div class="panel panel-default exchange-stage">
+		@endif
+			<div class="panel-heading"><strong>Results</strong></div>
+			<div class="panel-body">
+				<abbr title='{{ $exchange->give_at->toDateString() }}' class='initialism'>
+					<i class='fa fa-calendar'></i> {{ $exchange->give_at->diffForHumans() }}
+				</abbr><br />
+				@if($exchange->processed && $exchange->give_at->isPast())
+					<i class='fa fa-bullhorn'></i> Results are below
+				@endif
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <div class="progress">
 	<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{ $exchange->give_at_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $exchange->give_at_percentage }}%">
