@@ -93,7 +93,6 @@
 	</div>
 </div>
 
-<div class="container">
 <div class="progress">
 	<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{ $exchange->give_at_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $exchange->give_at_percentage }}%">
 		<span class="sr-only">{{ $exchange->give_at_percentage }}% Complete (Give at)</span>
@@ -102,8 +101,6 @@
 		<span class="sr-only">{{ $exchange->draw_at_percentage}}% Complete (Draw At)</span>
 	</div>
 </div>
-</div>
-
 
 <div class='well' style="margin-top: 15px;">
 	@if ($exchange->description)
