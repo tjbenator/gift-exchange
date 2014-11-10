@@ -32,67 +32,63 @@ Route::bind('user', function($value, $route)
     App::abort(404, 'User not found!');
 });
 
+Route::when('*', 'csrf', ['post']);
 
-Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
+Route::get('/', ['as' => 'home', 'uses' => 'HomeController@getIndex']);
 
-//Auth Pages
-
-Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@getLogout', 'before' => 'auth'));
-Route::group(array('prefix' => 'dashboard', 'before' => 'auth'), function ()
+Route::group(['prefix' => 'dashboard', 'before' => 'auth'], function ()
 {
-	Route::get('/', array('as' => 'dashboard', 'uses' => 'UserDashboardController@getIndex'));
+	Route::get('/', ['as' => 'dashboard', 'uses' => 'UserDashboardController@getIndex']);
 
-	Route::get('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@getAccount'));
-	Route::post('account', array('as' => 'dashboard.account', 'uses' => 'UserDashboardController@postAccount'));
+	Route::get('account', ['as' => 'dashboard.account', 'uses' => 'UserDashboardController@getAccount']);
+	Route::post('account', ['as' => 'dashboard.account', 'uses' => 'UserDashboardController@postAccount']);
 
-	Route::get('edit/wishlist', array('as' => 'dashboard.wishlist', 'uses' => 'UserDashboardController@getWishlist'));
-	Route::post('edit/wishlist', array('as' => 'dashboard.wishlist', 'uses' => 'UserDashboardController@postWishlist'));
+	Route::get('edit/wishlist', ['as' => 'dashboard.wishlist', 'uses' => 'UserDashboardController@getWishlist']);
+	Route::post('edit/wishlist', ['as' => 'dashboard.wishlist', 'uses' => 'UserDashboardController@postWishlist']);
 });
 
-Route::group(array('prefix' => 'exchanges'), function ()
+Route::group(['prefix' => 'exchanges'], function ()
 {
-	Route::get('/', array('as' => 'exchanges', 'uses' => 'ExchangeController@getIndex'));
+	Route::get('/', ['as' => 'exchanges', 'uses' => 'ExchangeController@getIndex']);
 	
-	Route::get('create', array('as' => 'exchange.create', 'uses' => 'ExchangeController@getCreate', 'before' => 'auth'));
-	Route::post('create', array('as' => 'exchange.create', 'uses' => 'ExchangeController@postCreate', 'before' => 'auth|csrf'));
+	Route::get('create', ['as' => 'exchange.create', 'uses' => 'ExchangeController@getCreate', 'before' => 'auth']);
+	Route::post('create', ['as' => 'exchange.create', 'uses' => 'ExchangeController@postCreate', 'before' => 'auth']);
 });
 
-Route::group(array('prefix' => 'exchange/{exchange}'), function ()
+Route::group(['prefix' => 'exchange/{exchange}'], function()
 {
-	Route::get('/', array('as' => 'exchange', 'uses' => 'ExchangeController@getExchange'));
+	Route::get('/', ['as' => 'exchange', 'uses' => 'ExchangeController@show']);
 
-	Route::get('join', array('as' => 'exchange.join', 'uses' => 'ExchangeController@getJoin', 'before' => 'auth|exchange.processed'));
-	Route::post('join', array('as' => 'exchange.join', 'uses' => 'ExchangeController@postJoin', 'before' => 'auth|csrf|exchange.processed'));
+	Route::get('join', ['as' => 'exchange.join', 'uses' => 'ExchangeController@getJoin', 'before' => 'auth|exchange.processed']);
+	Route::post('join', ['as' => 'exchange.join', 'uses' => 'ExchangeController@postJoin', 'before' => 'auth|exchange.processed']);
 
-	Route::get('leave', array('as' => 'exchange.leave', 'uses' => 'ExchangeController@getLeave', 'before' => 'auth|exchange.processed'));
-	Route::post('leave', array('as' => 'exchange.leave', 'uses' => 'ExchangeController@postLeave', 'before' => 'auth|exchange.processed'));
+	Route::get('leave', ['as' => 'exchange.leave', 'uses' => 'ExchangeController@getLeave', 'before' => 'auth|exchange.processed']);
+	Route::post('leave', ['as' => 'exchange.leave', 'uses' => 'ExchangeController@postLeave', 'before' => 'auth|exchange.processed']);
 
-	Route::get('edit', array('as' => 'exchange.edit', 'uses' => 'ExchangeController@getEdit', 'before' => 'auth|exchange.processed'));
-	Route::post('edit', array('as' => 'exchange.edit', 'uses' => 'ExchangeController@postEdit', 'before' => 'auth|exchange.processed'));
+	Route::get('edit', ['as' => 'exchange.edit', 'uses' => 'ExchangeController@getEdit', 'before' => 'auth|owner|exchange.processed']);
+	Route::post('edit', ['as' => 'exchange.edit', 'uses' => 'ExchangeController@postEdit', 'before' => 'auth|owner|exchange.processed']);
 
-	Route::get('delete', array('as' => 'exchange.delete', 'uses' => 'ExchangeController@getDelete', 'before' => 'auth|owner|exchange.processed'));
-	Route::post('delete', array('as' => 'exchange.delete', 'uses' => 'ExchangeController@postDelete', 'before' => 'auth|owner|csrf|exchange.processed'));
+	Route::get('delete', ['as' => 'exchange.delete', 'uses' => 'ExchangeController@getDelete', 'before' => 'auth|owner|exchange.processed']);
+	Route::post('delete', ['as' => 'exchange.delete', 'uses' => 'ExchangeController@postDelete', 'before' => 'auth|owner|exchange.processed']);
 });
 
-Route::group(array('prefix' => 'user/{user}'), function ()
+Route::get('users', ['as' => 'users', 'uses' => 'UserController@getUserList', 'before' => 'auth']);
+
+Route::get('user/{user}', ['as' => 'user', 'uses' => 'UserController@show', 'before' => 'auth']);
+
+Route::get('logout', ['as' => 'logout', 'uses' => 'AuthController@getLogout', 'before' => 'auth']);
+
+Route::group(['before' => 'guest'], function () 
 {
-	Route::get('/', array('as' => 'user', 'uses' => 'UserController@getIndex', 'before' => 'auth'));
-});
+	Route::get('/login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
+	Route::post('/login', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
 
-Route::get('users', array('as' => 'users', 'uses' => 'UserController@getUserList', 'before' => 'auth'));
-
-//Guest Pages
-Route::group(array('before' => 'guest'), function () 
-{
-	Route::get('/login', array('as' => 'login', 'uses' => 'AuthController@getLogin'));
-	Route::post('/login', array('as' => 'login', 'uses' => 'AuthController@postLogin', 'before' => 'csrf'));
-
-	Route::get('/register', array('as' => 'register', 'uses' => 'RegistrationController@getRegister'));
-	Route::post('/register', array('as' => 'register', 'uses' => 'RegistrationController@postRegister', 'before' => 'csrf'));
+	Route::get('/register', ['as' => 'register', 'uses' => 'RegistrationController@getRegister']);
+	Route::post('/register', ['as' => 'register', 'uses' => 'RegistrationController@postRegister']);
 
 	Route::controller('password', 'RemindersController');
 });
 
 //Pages
-Route::get('/about', array('as' => 'about', 'uses' => 'HomeController@getAbout'));
-Route::get('/how-to-wishlist', array('as' => 'how-to-wishlist', 'uses' => 'HomeController@getHowToWishlist'));
+Route::get('/about', ['as' => 'about', 'uses' => 'HomeController@getAbout']);
+Route::get('/how-to-wishlist', ['as' => 'how-to-wishlist', 'uses' => 'HomeController@getHowToWishlist']);

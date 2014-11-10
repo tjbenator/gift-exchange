@@ -1,8 +1,7 @@
 <?php
-class UserController extends PageController
-{
+class UserController extends PageController {
 
-	public function getIndex(User $user)
+	public function show(User $user)
 	{
 		$this->layout->title = $user->username;
 		$this->layout->nest('content', 'user', ['user' => $user]);

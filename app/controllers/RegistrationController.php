@@ -1,6 +1,6 @@
 <?php
-class RegistrationController extends PageController
-{
+class RegistrationController extends PageController {
+
 	public function postRegister() 
 	{
 		$data = Input::all();

@@ -1,10 +1,16 @@
 <?php
-class ExchangeController extends PageController
-{
+class ExchangeController extends PageController {
+
 	public function getIndex()
 	{
 		$this->layout->title = 'Exchanges';
 		$this->layout->nest('content', 'exchange.main', ['exchanges' => Exchange::orderBy('id', 'desc')->get()]);
+	}
+
+	public function show(Exchange $exchange)
+	{
+		$this->layout->title = $exchange->name;
+		$this->layout->nest('content', 'exchange.single', ['exchange' => $exchange]);
 	}
 
 	public function getCreate()
@@ -212,12 +218,6 @@ class ExchangeController extends PageController
 			$exchange->delete();
 			return Redirect::route('home');
 		}
-	}
-
-	public function getExchange(Exchange $exchange)
-	{
-		$this->layout->title = $exchange->name;
-		$this->layout->nest('content', 'exchange.single', ['exchange' => $exchange]);
 	}
 
 }
