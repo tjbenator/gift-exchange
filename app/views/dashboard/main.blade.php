@@ -34,7 +34,8 @@
 			@foreach($user->exchanges()->get() as $exchange)
 		    <tr>
 	    		<td>
-	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
+    				@include('templates.partials.exchanges.badges')
+    				<a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a>
 	    		</td>
 	    		<td>
 	        		{{ $exchange->draw_at->diffForHumans() }}
@@ -79,7 +80,8 @@
 			@foreach($user->made()->get() as $exchange)
 		    <tr>
 	    		<td>
-	    			<h3><a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a></h3>
+    				@include('templates.partials.exchanges.badges')
+    				<a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a>
 	    		</td>
 				<td>
 	        		{{ $exchange->draw_at->diffForHumans() }}
