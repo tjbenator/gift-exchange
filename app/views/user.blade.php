@@ -33,10 +33,8 @@
 			@foreach($user->exchanges()->where('hidden', 0)->get() as $exchange)
 		    <tr>
 	    		<td>
-	    			<h3>
-	    				@include('templates.partials.exchanges.badges')
-	    				<a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a>
-	    			</h3>
+	    			@include('templates.partials.exchanges.badges')
+	    			<a href='{{ URL::route('exchange', [$exchange->slug]) }}'>{{$exchange->name}}</a>
 	    		</td>
 	    		<td>
 	        		{{ $exchange->draw_at->diffForHumans() }}
