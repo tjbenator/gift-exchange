@@ -61,6 +61,15 @@
     </div>
   </div>
 
+  @if (Session::has('messages'))
+    <div class="container">
+      <div class="alert alert-success">
+        @foreach (Session::get('messages') as $message)
+        {{ $message }} <br />
+        @endforeach
+      </div>
+    </div>
+  @endif
   @if (count($errors) > 0)
     <div class="container">
       <div class="alert alert-warning">

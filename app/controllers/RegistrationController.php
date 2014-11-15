@@ -23,6 +23,11 @@ class RegistrationController extends PageController {
 			$user->currency = Input::get('currency');
 			$user->save();
 			Auth::login($user);
+			Mail::send('emails.auth.registration', array('user' => $user), function($message) use ($user)
+			{
+				$message->to($user->email, $user->username)->subject($user->username . '! Welcome!');
+			});
+			Session::flash('messages', ['Make sure to check your spam for messages from ' . Config::get('mail.from.address')]);
 			return Redirect::to('/');	
 		}
 
