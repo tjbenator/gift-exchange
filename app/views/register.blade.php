@@ -25,8 +25,6 @@
 		{{ Form::select('currency', DB::table('currency')->lists('title', 'code')) }}
 	</div>
 {{ Form::submit('Register', array('class' => 'btn btn-default')) }}
+<a class="btn btn-warning" href="{{ URL::to('password/remind') }}">Forgot your password?</a>
 </div>
 {{ Form::close() }}
-<p>
-<a class="btn btn-warning" href="{{ URL::to('password/remind') }}">Forgot your password?</a>
-</p>

@@ -116,7 +116,7 @@ class ExchangeController extends PageController {
 		{
 			if (Auth::User()->wishlist()->count() == 0)
 			{
-				return Redirect::route('dashboard.edit.wishlist')->withErrors(['e' => 'You must add items to your wishlist before joining an exchange!']);				
+				return Redirect::route('dashboard.wishlist')->withErrors(['e' => 'You must add items to your wishlist before joining an exchange!']);				
 			}
 
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
