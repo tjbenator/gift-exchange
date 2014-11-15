@@ -96,6 +96,10 @@ class ExchangeController extends PageController {
 
 	public function getJoin(Exchange $exchange)
 	{
+		if (Auth::User()->wishlist()->count() == 0)
+		{
+			return Redirect::route('dashboard.wishlist')->withErrors(['e' => 'You must add items to your wishlist before joining an exchange!']);				
+		}
 		$this->layout->title = 'Join "' . $exchange->name . '"';
 		$this->layout->nest('content', 'exchange.join', ['exchange' => $exchange]);
 	}
@@ -114,11 +118,6 @@ class ExchangeController extends PageController {
 		}
 		else
 		{
-			if (Auth::User()->wishlist()->count() == 0)
-			{
-				return Redirect::route('dashboard.wishlist')->withErrors(['e' => 'You must add items to your wishlist before joining an exchange!']);				
-			}
-
 			$user = $exchange->participants()->whereUsername(Auth::User()->username)->count();
 
 			if ($user == 0)
