@@ -2,7 +2,7 @@
 
 <div class='well'>
 @if ($user->wishlist())
-{{ nl2br(autolink($user->wishlist()->pluck('wishlist'), 50, ' rel="nofollow"')) }}
+{{ nl2br(autolink($user->wishlist()->pluck('wishlist'), 50, ' rel="nofollow" target="_blank"')) }}
 @endif
 </div>
 
