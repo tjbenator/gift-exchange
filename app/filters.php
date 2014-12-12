@@ -98,11 +98,25 @@ Route::filter('exchange.owner', function ($route, $request) {
 	return Redirect::route('exchanges')->withErrors(['e' => 'You are not the owner of the "' . $exchange->name . '" exchange!']);
 });
 
-Route::filter('exchange.processed', function ($route, $request) {
+Route::filter('exchange.processed', function ($route, $request, $value) {
 	$exchange = $route->getParameter('exchange');
-	if ($exchange->processed) {
-		return Redirect::route('exchange', [$exchange->slug])->withErrors(['e' => 'This exchange can not be modified because it is past it\'s draw date of ' . $exchange->draw_at]);	
+	if ($value == 'allow') {
+		if (!$exchange->processed) {
+			return Redirect::route('exchange', [$exchange->slug])->withErrors(['e' => 'This function can not be used because this exchange has not been drawn for.']);	
+		}
+	} elseif($value == 'deny') {
+		if ($exchange->processed) {
+			return Redirect::route('exchange', [$exchange->slug])->withErrors(['e' => 'This exchange can not be modified because it is past it\'s draw date of ' . $exchange->draw_at]);	
+		}
 	}
 	return;
+});
+
+Route::filter('exchange.participant', function ($route, $request) {
+	$exchange = $route->getParameter('exchange');
+	if (Auth::check()) {
+		if ($exchange->participants->contains(Auth::user()->id)) return;
+	}
 	
+	return Redirect::route('exchanges')->withErrors(['e' => 'You are not participating in the "' . $exchange->name . '" exchange!']);
 });

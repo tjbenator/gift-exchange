@@ -219,4 +219,49 @@ class ExchangeController extends PageController {
 		}
 	}
 
+	public function getMessage(Exchange $exchange)
+	{
+		$this->layout->title = 'Message';
+		$this->layout->nest('content', 'exchange.message', ['exchange' => $exchange]);
+	}
+
+	public function postMessage(Exchange $exchange)
+	{
+		$rules = array(
+			'whom' => 'required',
+			'message' => 'required|min:5|max:100'
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails())
+		{
+			return Redirect::route('exchange.message', ['exchange' => $exchange->slug])->withErrors($validator)->withInput(Input::all());
+		}
+		else
+		{
+			switch (Input::get('whom')) {
+				case 'gifty':
+					$from = 'your gifter';
+					$user = $exchange->surprises()->whereGiverId(Auth::User()->id)->first()->gifty;
+					break;
+				case 'gifter':
+					$from = Auth::User()->username;
+					$user = $exchange->surprises()->whereGiftyId(Auth::User()->id)->first()->giver;
+					break;
+				default:
+					return Input::get('whom');
+					return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'You broke it!']);
+					break;
+			}
+
+			$msg = nl2br(Input::get('message'));
+
+			Mail::send('emails.exchanges.message', array('from' => $from, 'to' => $user, 'exchange' => $exchange, 'msg' => $msg), function($message) use ($exchange, $user, $from, $msg)
+			{
+				$message->to($user->email, $user->username)->subject($exchange->name . ' private message!');
+			});
+			return Redirect::route('exchange', ['exchange' => $exchange->slug])->withErrors(['e' => 'Email sent!']);
+		}	
+	}
 }

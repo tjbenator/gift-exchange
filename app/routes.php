@@ -59,17 +59,20 @@ Route::group(['prefix' => 'exchange/{exchange}'], function()
 {
 	Route::get('/', ['as' => 'exchange', 'uses' => 'ExchangeController@show']);
 
-	Route::get('join', ['as' => 'exchange.join', 'uses' => 'ExchangeController@getJoin', 'before' => 'auth|exchange.processed']);
-	Route::post('join', ['as' => 'exchange.join', 'uses' => 'ExchangeController@postJoin', 'before' => 'auth|exchange.processed']);
+	Route::get('join', ['as' => 'exchange.join', 'uses' => 'ExchangeController@getJoin', 'before' => 'auth|exchange.processed:deny']);
+	Route::post('join', ['as' => 'exchange.join', 'uses' => 'ExchangeController@postJoin', 'before' => 'auth|exchange.processed:deny']);
 
-	Route::get('leave', ['as' => 'exchange.leave', 'uses' => 'ExchangeController@getLeave', 'before' => 'auth|exchange.processed']);
-	Route::post('leave', ['as' => 'exchange.leave', 'uses' => 'ExchangeController@postLeave', 'before' => 'auth|exchange.processed']);
+	Route::get('leave', ['as' => 'exchange.leave', 'uses' => 'ExchangeController@getLeave', 'before' => 'auth|exchange.processed:deny']);
+	Route::post('leave', ['as' => 'exchange.leave', 'uses' => 'ExchangeController@postLeave', 'before' => 'auth|exchange.processed:deny']);
 
-	Route::get('edit', ['as' => 'exchange.edit', 'uses' => 'ExchangeController@getEdit', 'before' => 'auth|owner|exchange.processed']);
-	Route::post('edit', ['as' => 'exchange.edit', 'uses' => 'ExchangeController@postEdit', 'before' => 'auth|owner|exchange.processed']);
+	Route::get('message', ['as' => 'exchange.message', 'uses' => 'ExchangeController@getMessage', 'before' => 'auth|exchange.participant|exchange.processed:allow']);
+	Route::post('message', ['as' => 'exchange.message', 'uses' => 'ExchangeController@postMessage', 'before' => 'auth|exchange.participant|exchange.processed:allow']);
 
-	Route::get('delete', ['as' => 'exchange.delete', 'uses' => 'ExchangeController@getDelete', 'before' => 'auth|owner|exchange.processed']);
-	Route::post('delete', ['as' => 'exchange.delete', 'uses' => 'ExchangeController@postDelete', 'before' => 'auth|owner|exchange.processed']);
+	Route::get('edit', ['as' => 'exchange.edit', 'uses' => 'ExchangeController@getEdit', 'before' => 'auth|owner|exchange.processed:deny']);
+	Route::post('edit', ['as' => 'exchange.edit', 'uses' => 'ExchangeController@postEdit', 'before' => 'auth|owner|exchange.processed:deny']);
+
+	Route::get('delete', ['as' => 'exchange.delete', 'uses' => 'ExchangeController@getDelete', 'before' => 'auth|owner|exchange.processed:deny']);
+	Route::post('delete', ['as' => 'exchange.delete', 'uses' => 'ExchangeController@postDelete', 'before' => 'auth|owner|exchange.processed:deny']);
 });
 
 Route::get('users', ['as' => 'users', 'uses' => 'UserController@getUserList', 'before' => 'auth']);
