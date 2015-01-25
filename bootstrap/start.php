@@ -26,11 +26,12 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(function ()
 {
-	if (file_exists(__DIR__.'/environment.php')) {
-    	return require __DIR__.'/environment.php';
-	} else {
-		return 'local';
-	}
+	if (getenv('TRAVIS'))
+		return 'testing';
+	if (file_exists(__DIR__.'/environment.php'))
+    		return require __DIR__.'/environment.php';
+
+	return 'local';
 });
 
 /*

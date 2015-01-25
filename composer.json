@@ -10,6 +10,9 @@
 		"iamcal/lib_autolink": "dev-master",
 		"thomaswelton/laravel-gravatar": "0.1.x"
 	},
+	"require-dev": {
+        	"satooshi/php-coveralls": "~0.6.0"
+   	},
 	"autoload": {
 		"classmap": [
 			"app/commands",

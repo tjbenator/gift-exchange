@@ -1,0 +1,4 @@
+service_name: travis-ci
+
+#Source Directory
+src_dir: app
